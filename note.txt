@@ -1,0 +1,2 @@
+The users post will come with the email, uuid and password used to sign up
+THe uuid will then be used to generate the user profile

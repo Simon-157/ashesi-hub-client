@@ -43,7 +43,6 @@ dependencies:
   firebase_auth: ^4.4.0
   shared_preferences: ^2.1.0
   google_sign_in: ^6.1.0
-  flushbar: ^1.10.4
   cloud_firestore: ^4.5.0
   firebase_storage: ^11.1.0
   uuid: ^3.0.7

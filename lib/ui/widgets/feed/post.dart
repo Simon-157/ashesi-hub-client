@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hub_client/components/card_custom.dart';
 import 'package:hub_client/components/custome_image.dart';
 import 'package:hub_client/models/post_model.dart';
@@ -293,15 +294,19 @@ class UserPost extends StatelessWidget {
   }
 
   buildUser(BuildContext context) {
-    bool isMe = uid == post.ownerId;
+    bool isMe = uid != null && uid == post.ownerId;
+    // if (uid == null) {
+    //   return Container();
+    // }
+
     return StreamBuilder(
-      stream: usersRef.doc(uid).snapshots(),
+      stream: usersRef.doc(post.ownerId).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot snap = snapshot?.data;
           UserModel user = UserModel.fromJson(snap.data());
           return Visibility(
-            visible: !isMe,
+            // visible: !isMe,
             child: Align(
               alignment: Alignment.topCenter,
               child: Container(
@@ -314,7 +319,7 @@ class UserPost extends StatelessWidget {
                   ),
                 ),
                 child: GestureDetector(
-                  onTap: () => showProfile(context, profileId: user.user_id),
+                  onTap: () => showProfile(context, profileId: post.ownerId),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Row(
@@ -348,7 +353,7 @@ class UserPost extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              post?.username ?? "",
+                              ' ${isMe ? "You" : post?.username}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
                                 color: Colors.black,
@@ -379,11 +384,6 @@ class UserPost extends StatelessWidget {
   }
 
   showProfile(BuildContext context, {String profileId}) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (BuildContext context) {}
-          // builder: (_) => Profile(profileId: profileId),
-          ),
-    );
+    context.go('/profile/$profileId');
   }
 }

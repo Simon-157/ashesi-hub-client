@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hub_client/utils/authentication.dart';
 
 class UserProfileTooltip extends StatefulWidget {
   final String username;
@@ -54,7 +55,7 @@ class _UserProfileTooltipState extends State<UserProfileTooltip> {
                     ),
                   ),
                 ),
-                onPressed: () => {context.go('/profile')},
+                onPressed: () => {context.go('/profile/$uid')},
                 child: const Text('View My Profile'),
               )
             ],

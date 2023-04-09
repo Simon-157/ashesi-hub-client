@@ -7,6 +7,7 @@ import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 // import 'package:hub_client/ui/views/profile/profile_page.dart';
 import 'package:hub_client/ui/views/profile/profile_screen.dart';
+import 'package:hub_client/ui/views/profileview/profile.dart';
 import 'package:hub_client/utils/post_view.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,14 @@ final GoRouter router = GoRouter(
           path: 'profile',
           builder: (BuildContext context, GoRouterState state) {
             return const ProfileScreen();
+          },
+        ),
+        GoRoute(
+          path: 'profile/:uid', // add dynamic URL
+          builder: (BuildContext context, GoRouterState state) {
+            // extract the uid from the parameters
+            final uid = state.params['uid'];
+            return Profile(profileId: uid);
           },
         ),
         GoRoute(

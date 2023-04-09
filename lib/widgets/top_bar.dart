@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/ui/views/home/home_page.dart';
+import 'package:hub_client/ui/views/auth/login_page.dart';
 import 'package:hub_client/ui/widgets/profile/profile_dialog.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
@@ -40,6 +40,11 @@ class _TopBarContentsState extends State<TopBarContents> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Image.asset(
+                'images/logo_ashesi.png',
+                width: 50,
+                height: 50,
+              ),
               Text(
                 'ashHub',
                 style: TextStyle(
@@ -209,7 +214,8 @@ class _TopBarContentsState extends State<TopBarContents> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           fullscreenDialog: true,
-                                          builder: (context) => HomePage(),
+                                          builder: (context) =>
+                                              const LoginPage(),
                                         ),
                                       );
                                     }).catchError((error) {

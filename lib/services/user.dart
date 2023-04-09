@@ -8,7 +8,7 @@ class UserService extends Service {
     return firebaseAuth.currentUser.uid;
   }
 
-//tells when the user is online or not and updates the last seen for the messages
+
   setUserStatus(bool isOnline) {
     var user = firebaseAuth.currentUser;
     if (user != null) {

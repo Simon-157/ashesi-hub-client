@@ -5,6 +5,7 @@ import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/feed/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
+import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/loaders.dart';
 // import 'package:social_media_app/chats/recent_chats.dart';
@@ -65,11 +66,25 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: const Color(0xFF092A45),
-            title: const Text(
-              "ashHUb",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-              ),
+            title: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.go('/');
+                  },
+                  icon: Image.asset(
+                    'images/logo_ashesi.png',
+                    width: 50,
+                    height: 50,
+                  ),
+                ),
+                const Text(
+                  "ashHUb",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                  ),
+                )
+              ],
             ),
             centerTitle: true,
             actions: [
@@ -90,6 +105,16 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                 ),
                 onPressed: () {
                   context.go('/feeds/create_post');
+                },
+              ),
+              const SizedBox(width: 20.0),
+              IconButton(
+                icon: const Icon(
+                  Icons.person_rounded,
+                  size: 30.0,
+                ),
+                onPressed: () {
+                  context.go('/profile/$uid');
                 },
               ),
               const SizedBox(width: 20.0),

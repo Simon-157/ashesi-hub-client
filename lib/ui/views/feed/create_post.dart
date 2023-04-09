@@ -49,7 +49,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
     final postsViewModel = Provider.of<PostsViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Post'),
+        title: Image.asset(
+          'images/logo_ashesi.png',
+          width: 50,
+          height: 50,
+        ),
         actions: [
           TextButton(
             onPressed: () {

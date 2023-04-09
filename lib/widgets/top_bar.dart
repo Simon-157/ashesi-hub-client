@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/ui/widgets/profile/profile_dialog.dart';
 import 'package:hub_client/utils/authentication.dart';
@@ -62,7 +63,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                               : _isHovering[0] = false;
                         });
                       },
-                      onTap: () {},
+                      onTap: () => {context.go('/feeds')},
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

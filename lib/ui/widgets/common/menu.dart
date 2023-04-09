@@ -7,7 +7,7 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -16,7 +16,7 @@ class Menu extends StatelessWidget {
             children: [
               _menuItem(title: 'Home', context: context, route: '/'),
               _menuItem(title: 'About us', context: context, route: '/about'),
-              _menuItem(title: 'Feed', context: context, route: '/feed'),
+              _menuItem(title: 'Feed', context: context, route: '/feeds'),
               _menuItem(title: 'Help', context: context, route: '/help'),
             ],
           ),
@@ -63,7 +63,7 @@ class Menu extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 6,
+                height: 1,
               ),
               isActive
                   ? Container(

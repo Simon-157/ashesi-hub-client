@@ -10,89 +10,86 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      // height: MediaQuery.of(context).size.height,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 360,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Join TO Explore With Friends IN the Community',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        foreground: Paint()..shader = sloganShade,
-                        shadows: const [
-                          Shadow(
-                              offset: Offset(10, 10),
-                              blurRadius: 20,
-                              color: Colors.black),
-                          Shadow(
-                              offset: Offset(10, 10),
-                              blurRadius: 20,
-                              color: Colors.black12),
-                        ]),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "If you don't have an account",
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 146, 180, 201),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        "You can",
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            width: 360,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Join TO Explore With Friends IN the Community',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()..shader = sloganShade,
+                      shadows: const [
+                        Shadow(
+                            offset: Offset(10, 10),
+                            blurRadius: 20,
+                            color: Colors.black),
+                        Shadow(
+                            offset: Offset(10, 10),
+                            blurRadius: 20,
+                            color: Colors.black12),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "If you don't have an account",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 146, 180, 201),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      "You can",
+                      style: TextStyle(
+                          color: Colors.black54, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 15),
+                    GestureDetector(
+                      onTap: () {
+                        print(MediaQuery.of(context).size.width);
+                      },
+                      child: const Text(
+                        "Register here!",
                         style: TextStyle(
-                            color: Colors.black54, fontWeight: FontWeight.bold),
+                            color: Color.fromARGB(255, 211, 255, 250),
+                            fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(width: 15),
-                      GestureDetector(
-                        onTap: () {
-                          print(MediaQuery.of(context).size.width);
-                        },
-                        child: const Text(
-                          "Register here!",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 211, 255, 250),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Image.asset(
-                    'images/illustration-2.png',
-                    width: 300,
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                Image.asset(
+                  'images/illustration-2.png',
+                  width: 300,
+                ),
+              ],
             ),
-            Image.asset(
-              'images/illustration-1.png',
-              width: 300,
+          ),
+          Image.asset(
+            'images/illustration-1.png',
+            width: 300,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height / 20),
+            child: Container(
+              width: 320,
+              child: const Center(child: LoginForm()),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height / 20),
-              child: Container(
-                width: 320,
-                child: const Center(child: LoginForm()),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

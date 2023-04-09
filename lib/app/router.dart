@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/ui/views/auth/login_page.dart';
 import 'package:hub_client/ui/views/auth/register_page.dart';
+import 'package:hub_client/ui/views/feed/create_post.dart';
+import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
-import 'package:hub_client/ui/views/profile/profile_page.dart';
+// import 'package:hub_client/ui/views/profile/profile_page.dart';
+import 'package:hub_client/ui/views/profile/profile_screen.dart';
+import 'package:hub_client/utils/post_view.dart';
+import 'package:provider/provider.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -28,7 +33,22 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'profile',
           builder: (BuildContext context, GoRouterState state) {
-            return const ProfilePge();
+            return const ProfileScreen();
+          },
+        ),
+        GoRoute(
+          path: 'feeds',
+          builder: (BuildContext context, GoRouterState state) {
+            return const Feeds();
+          },
+        ),
+        GoRoute(
+          path: 'feeds/create_post',
+          builder: (BuildContext context, GoRouterState state) {
+            return ChangeNotifierProvider(
+              create: (_) => PostsViewModel(),
+              child: const CreatePostPage(),
+            );
           },
         ),
       ],

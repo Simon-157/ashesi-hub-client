@@ -8,10 +8,7 @@ class LoginForm extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.height / 6),
-      child: Container(
-        width: 320,
-        child: _formLogin(),
-      ),
+      child: SizedBox(width: 320, child: Expanded(child: _formLogin())),
     );
   }
 
@@ -129,7 +126,7 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Widget _loginWithButton({ String image, bool isActive = false}) {
+  Widget _loginWithButton({String image, bool isActive = false}) {
     return Container(
       width: 90,
       height: 70,

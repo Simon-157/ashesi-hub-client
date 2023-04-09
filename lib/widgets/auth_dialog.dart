@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/utils/authentication.dart';
 
 import 'google_sign_in_button.dart';
 
 class AuthDialog extends StatefulWidget {
+  const AuthDialog({Key key}) : super(key: key);
+
   @override
   _AuthDialogState createState() => _AuthDialogState();
 }

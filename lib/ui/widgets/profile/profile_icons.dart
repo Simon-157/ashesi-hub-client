@@ -43,6 +43,21 @@ class ProfileIcons extends StatelessWidget {
                         color: Color.fromARGB(231, 152, 239, 38))),
               ),
             )),
+        const SizedBox(width: 10),
+        ProfileTooltip(
+            message: 'post',
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: editProfile,
+                child: const Center(
+                    child: Icon(
+                  Icons.add_to_photos_rounded,
+                  color: Color.fromARGB(255, 229, 125, 22),
+                )),
+              ),
+            )),
+        const SizedBox(width: 10),
       ],
     ));
   }

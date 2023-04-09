@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/ui/widgets/profile/profile_icons.dart';
+import 'package:hub_client/utils/authentication.dart';
+
+import '../../../services/getuser_api_service.dart';
 
 class ProfilePge extends StatelessWidget {
   const ProfilePge({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+     final student = ApiService.getStudent(uid);
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -126,3 +130,6 @@ class ProfilePge extends StatelessWidget {
     );
   }
 }
+
+
+

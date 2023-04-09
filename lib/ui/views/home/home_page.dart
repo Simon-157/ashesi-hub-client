@@ -35,11 +35,11 @@ class HomePage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 100),
+                        const SizedBox(height: 80),
                         const Text('Campus Social Sphere',
                             style: TextStyle(
                                 color: Color(0xFFE6949B), fontSize: 18)),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Text(
                           'ASHESI HUB',
                           style: TextStyle(

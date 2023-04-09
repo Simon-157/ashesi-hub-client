@@ -119,13 +119,15 @@ class RegisterForm extends StatelessWidget {
             // Create a Map of form data with the values from the TextFields
             print(firstNameController.text);
             Map<String, dynamic> formData = {
-              'user_id':uid,
+              'user_id': uid,
               'first_name': firstNameController.text,
               'last_name': lastNameController.text,
               'email_or_phone': emailController.text,
               'major': majorController.text,
               'year_group': yeargroupController.text,
               'student_id': int.parse(studentIdController.text),
+              'avatar_url': 'https://i.pravatar.cc/300',
+              'best_food': 'jollof'
             };
 
             try {

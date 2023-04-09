@@ -6,7 +6,7 @@ import '../enums/constants.dart';
 
 class ApiService {
   static Future<Map> getStudent(String id) async {
-    String apiUrl = '${Constants.apiBaseUrl}/register/$id';
+    String apiUrl = '${Constants.apiBaseUrl}/get_student/$id';
     final url = Uri.parse(apiUrl);
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',

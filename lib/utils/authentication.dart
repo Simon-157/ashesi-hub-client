@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hub_client/models/user_model.dart';
+import 'package:hub_client/services/getuser_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -10,6 +12,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 bool authSignedIn;
 String uid;
 String userEmail;
+var authUser;
 
 Future<String> registerWithEmailPassword(String email, String password) async {
   // Initialize Firebase
@@ -70,7 +73,7 @@ Future<String> signInWithEmailPassword(String email, String password) async {
 
     uid = user.uid;
     userEmail = user.email;
-
+    authUser = ApiService.getStudent(uid);
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
@@ -152,17 +155,15 @@ void signOutGoogle() async {
   print("User signed out of Google account");
 }
 
-
-
 Future getUser() async {
   // Initialize Firebase
   await Firebase.initializeApp();
-  
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool authSignedIn = prefs.getBool('auth') ?? false;
-  
+
   final User user = _auth.currentUser;
-  
+
   if (authSignedIn == true) {
     if (user != null) {
       uid = user.uid;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/widgets/top_bar.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   final Shader iphoneShader =
       const LinearGradient(colors: [Color(0xff070D14), Color(0xff85D1EE)])

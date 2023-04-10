@@ -18,7 +18,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class UserPost extends StatelessWidget {
   final PostModel post;
 
-  UserPost({this.post});
+  UserPost({Key? key, required this.post}) : super(key: key);
 
   final DateTime timestamp = DateTime.now();
 
@@ -48,7 +48,7 @@ class UserPost extends StatelessWidget {
                   ),
                 ),
                 onClosed: (v) {},
-                closedColor: Color.fromARGB(220, 13, 35, 57),
+                closedColor: const Color.fromARGB(220, 13, 35, 57),
                 closedBuilder:
                     (BuildContext context, VoidCallback openContainer) {
                   return Stack(
@@ -61,7 +61,7 @@ class UserPost extends StatelessWidget {
                               topRight: Radius.circular(10.0),
                             ),
                             child: CustomImage(
-                              imageUrl: post?.mediaUrl ?? '',
+                              imageUrl: post.mediaUrl,
                               height: 150.0,
                               fit: BoxFit.cover,
                               width: 100,
@@ -85,9 +85,10 @@ class UserPost extends StatelessWidget {
                                             BorderRadius.circular(10.0),
                                         onTap: () {
                                           Navigator.of(context).push(
-                                            CupertinoPageRoute(
-                                                builder:
-                                                    (BuildContext context) {}
+                                            CupertinoPageRoute(builder:
+                                                    (BuildContext context) {
+                                              return Container();
+                                            }
                                                 // builder: (_) => Comments(post: post),
                                                 ),
                                           );
@@ -118,12 +119,12 @@ class UserPost extends StatelessWidget {
                                               AsyncSnapshot<QuerySnapshot>
                                                   snapshot) {
                                             if (snapshot.hasData) {
-                                              QuerySnapshot snap =
+                                              QuerySnapshot? snap =
                                                   snapshot.data;
                                               List<DocumentSnapshot> docs =
-                                                  snap.docs;
+                                                  snap!.docs;
                                               return buildLikesCount(
-                                                  context, docs.length ?? 0);
+                                                  context, docs.length);
                                             } else {
                                               return buildLikesCount(
                                                   context, 0);
@@ -142,11 +143,11 @@ class UserPost extends StatelessWidget {
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
                                         if (snapshot.hasData) {
-                                          QuerySnapshot snap = snapshot.data;
+                                          QuerySnapshot? snap = snapshot.data;
                                           List<DocumentSnapshot> docs =
-                                              snap.docs;
+                                              snap!.docs;
                                           return buildCommentsCount(
-                                              context, docs.length ?? 0);
+                                              context, docs.length);
                                         } else {
                                           return buildCommentsCount(context, 0);
                                         }
@@ -161,11 +162,11 @@ class UserPost extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 5.0, top: 3.0),
                                     child: Text(
-                                      '${post?.description ?? ""}',
+                                      post.description,
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .caption
+                                            .caption!
                                             .color,
                                         fontSize: 15.0,
                                       ),
@@ -303,8 +304,8 @@ class UserPost extends StatelessWidget {
       stream: usersRef.doc(post.ownerId).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
-          DocumentSnapshot snap = snapshot?.data;
-          UserModel user = UserModel.fromJson(snap.data());
+          DocumentSnapshot<Object?>? snap = snapshot.data;
+          UserModel user = UserModel.fromJson(snap!.data());
           return Visibility(
             // visible: !isMe,
             child: Align(
@@ -353,7 +354,7 @@ class UserPost extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              ' ${isMe ? "You" : post?.username}',
+                              ' ${isMe ? "You" : post.username}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
                                 color: Colors.black,
@@ -383,7 +384,7 @@ class UserPost extends StatelessWidget {
     );
   }
 
-  showProfile(BuildContext context, {String profileId}) {
+  showProfile(BuildContext context, {required String profileId}) {
     context.go('/profile/$profileId');
   }
 }

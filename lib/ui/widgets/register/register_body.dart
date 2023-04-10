@@ -1,9 +1,8 @@
-/// The RegisterBody class displays a registration form and a slogan for a community app.
 import 'package:flutter/material.dart';
-import 'package:hub_client/ui/widgets/register/register_form.dart';
+import 'package:hub_client/ui/widgets/register/regiter_view_form.dart';
 
 class RegisterBody extends StatelessWidget {
-  RegisterBody({Key key}) : super(key: key);
+  RegisterBody({Key? key}) : super(key: key);
 
   final Shader sloganShade =
       const LinearGradient(colors: [Color(0xff070D14), Color(0xff85D1EE)])

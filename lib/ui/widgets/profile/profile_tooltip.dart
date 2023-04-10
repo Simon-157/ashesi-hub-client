@@ -4,7 +4,7 @@ class ProfileTooltip extends StatelessWidget {
   final String message;
   final Widget child;
 
-  const ProfileTooltip({Key key, this.message, this.child}) : super(key: key);
+  const ProfileTooltip({Key? key, required this.message, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

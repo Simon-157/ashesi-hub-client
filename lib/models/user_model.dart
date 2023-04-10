@@ -1,32 +1,39 @@
-// ignore_for_file: non_constant_identifier_names
-
 class UserModel {
-  String username;
-  String email;
-  String year_group;
-  String best_food;
-  String user_id;
-  String major;
-  String avatar_url;
-  bool isOnline;
+  late String username;
+  late String email;
+  late String year_group;
+  late String best_food;
+  late String best_movie;
+  late String user_id;
+  late String major;
+  late String avatar_url;
+  late String residence;
+  late bool isOnline;
+
+  // late DateTime date_of_birth;
 
   UserModel(
-      {this.username,
-      this.email,
-      this.user_id,
-      this.major,
-      this.year_group,
-      this.best_food,
-      this.avatar_url});
+      {required this.username,
+      required this.email,
+      required this.user_id,
+      required this.major,
+      required this.year_group,
+      required this.best_food,
+      required this.best_movie,
+      required this.residence,
+      required this.avatar_url});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(json) {
     username = json['first_name'];
     email = json['email_or_phone'];
     user_id = json['user_id'];
     major = json['major'];
     year_group = json['year_group'];
     best_food = json['best_food'];
+    best_movie = json['best_movie'];
+    residence = json['residence'];
     avatar_url = json['avatar_url'];
+    // DateTime.fromMillisecondsSinceEpoch(json['date_of_birth'] * 1000);
   }
 
   Map<String, dynamic> toJson() {
@@ -38,6 +45,9 @@ class UserModel {
     data['best_food'] = best_food;
     data['user_id'] = user_id;
     data['avatar_url'] = avatar_url;
+    data['best_movie'] = best_movie;
+    data['residence'] = residence;
+    // data['date_of_birth'] = date_of_birth;
     return data;
   }
 }

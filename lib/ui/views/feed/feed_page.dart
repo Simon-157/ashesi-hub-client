@@ -11,7 +11,7 @@ import 'package:hub_client/widgets/loaders.dart';
 // import 'package:social_media_app/chats/recent_chats.dart';
 
 class Feeds extends StatefulWidget {
-  const Feeds({Key key}) : super(key: key);
+  const Feeds({Key? key}) : super(key: key);
 
   @override
   _FeedsState createState() => _FeedsState();
@@ -144,7 +144,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasData) {
                             var snap = snapshot.data;
-                            List docs = snap.docs;
+                            List docs = snap!.docs;
                             return ListView.builder(
                               controller: scrollController,
                               itemCount: docs.length,

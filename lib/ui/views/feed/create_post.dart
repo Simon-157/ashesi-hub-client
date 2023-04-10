@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:hub_client/services/posts_service.dart';
-import 'package:hub_client/utils/post_view.dart';
+import 'package:hub_client/providers/post_view.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
 class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({Key key}) : super(key: key);
+  const CreatePostPage({Key? key}) : super(key: key);
 
   @override
   _CreatePostPageState createState() => _CreatePostPageState();
@@ -15,15 +15,14 @@ class CreatePostPage extends StatefulWidget {
 
 class _CreatePostPageState extends State<CreatePostPage> {
   final _captionController = TextEditingController();
-  String _image;
-  String _description;
-  File imageFile;
-  File img;
+  late String _description;
+  late File imageFile;
+  late File img;
   PostService postService = PostService();
 
   Future<void> _getImage(BuildContext context) async {
     // final pickedFile = await ImagePickerWeb.getImageInfo;
-    imageFile = await ImagePickerWeb.getImageAsFile();
+    imageFile = (await ImagePickerWeb.getImageAsFile())!;
 
     // if (pickedFile != null) {
     //   setState(() {
@@ -76,29 +75,29 @@ class _CreatePostPageState extends State<CreatePostPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (_image != null) ...[
-                Container(
-                  height: 100,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: MemoryImage(
-                        // Decoding from base64 to bytes.
-                        base64.decode(img.toString()),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
+              // if (_image != null) ...[
+              // Container(
+              //   height: 100,
+              //   width: 200,
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: MemoryImage(
+              //         // Decoding from base64 to bytes.
+              //         base64.decode(img.toString()),
+              //       ),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(height: 16),
+              // ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     child: TextButton(
                         onPressed: () async {
-                          postsViewModel.pickImage(context);
+                          // postsViewModel.pickImage(context);
                         },
                         child: Container(
                           height: 100,

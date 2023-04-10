@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FilterOptions extends StatefulWidget {
   final List<String> options;
 
-  FilterOptions({this.options});
+  const FilterOptions({Key? key, required this.options}) : super(key: key);
 
   @override
   _FilterOptionsState createState() => _FilterOptionsState();

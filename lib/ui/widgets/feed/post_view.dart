@@ -12,7 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class ViewImage extends StatefulWidget {
   final PostModel post;
 
-  ViewImage({this.post});
+  const ViewImage({Key? key, required this.post}) : super(key: key);
 
   @override
   _ViewImageState createState() => _ViewImageState();
@@ -24,7 +24,7 @@ currentUserId() {
   return uid;
 }
 
-UserModel user;
+late UserModel user;
 
 class _ViewImageState extends State<ViewImage> {
   @override

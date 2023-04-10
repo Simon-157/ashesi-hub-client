@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/utils/authentication.dart';
-
 import 'google_sign_in_button.dart';
 
 class AuthDialog extends StatefulWidget {
-  const AuthDialog({Key key}) : super(key: key);
+  const AuthDialog({Key? key}) : super(key: key);
 
   @override
   _AuthDialogState createState() => _AuthDialogState();
 }
 
 class _AuthDialogState extends State<AuthDialog> {
-  TextEditingController textControllerEmail;
-  FocusNode textFocusNodeEmail;
+  late TextEditingController textControllerEmail;
+  late FocusNode textFocusNodeEmail;
   bool _isEditingEmail = false;
 
-  TextEditingController textControllerPassword;
-  FocusNode textFocusNodePassword;
+  late TextEditingController textControllerPassword;
+  late FocusNode textFocusNodePassword;
   bool _isEditingPassword = false;
 
   bool _isRegistering = false;
   bool _isLoggingIn = false;
 
-  String loginStatus;
+  String loginStatus = "";
   Color loginStringColor = Colors.green;
 
-  String _validateEmail(String value) {
+  String? _validateEmail(String value) {
     value = value.trim();
 
     if (textControllerEmail.text != null) {
@@ -41,7 +40,7 @@ class _AuthDialogState extends State<AuthDialog> {
     return null;
   }
 
-  String _validatePassword(String value) {
+  String? _validatePassword(String value) {
     value = value.trim();
 
     if (textControllerEmail.text != null) {

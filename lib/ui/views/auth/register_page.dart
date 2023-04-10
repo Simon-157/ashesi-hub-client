@@ -3,7 +3,7 @@ import 'package:hub_client/ui/widgets/common/menu.dart';
 import 'package:hub_client/ui/widgets/register/register_body.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({key});
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class RegisterPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width / 7),
           children: [
-            const Menu(),
+            Menu(),
             RegisterBody(),
           ],
         ),

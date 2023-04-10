@@ -29,7 +29,7 @@ class _GoogleButtonState extends State<GoogleButton> {
             ),
           ),
           overlayColor: MaterialStateColor.resolveWith(
-            (states) => Colors.blueGrey[100],
+            (states) => const Color.fromARGB(255, 207, 216, 220),
           ),
           splashFactory: InkRipple.splashFactory,
         ),

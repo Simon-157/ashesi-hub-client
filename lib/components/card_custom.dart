@@ -7,10 +7,10 @@ class CustomCard extends StatelessWidget {
   final bool elevated;
 
   CustomCard({
-    Key key,
-    this.child,
-    this.onTap,
-    this.borderRadius,
+    Key? key,
+    required this.child,
+    required this.onTap,
+    required this.borderRadius,
     this.elevated = true,
   });
 

@@ -8,12 +8,12 @@ class UserProfileTooltip extends StatefulWidget {
   final String bio;
   final Widget child;
 
-  UserProfileTooltip({
-    this.username,
-    this.profileImageURL,
-    this.bio,
-    this.child,
-  });
+  UserProfileTooltip({Key? key, 
+    required this.username,
+    required this.profileImageURL,
+    required this.bio,
+    required this.child,
+  }) : super(key: key);
 
   @override
   _UserProfileTooltipState createState() => _UserProfileTooltipState();

@@ -4,7 +4,7 @@ import 'package:hub_client/services/register_api_service.dart';
 import 'package:hub_client/utils/authentication.dart';
 
 class RegisterForm extends StatelessWidget {
-  const RegisterForm({Key key}) : super(key: key);
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,15 +117,15 @@ class RegisterForm extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () async {
             // Create a Map of form data with the values from the TextFields
-            print(firstNameController.text);
+            print(firstNameController!.text);
             Map<String, dynamic> formData = {
               'user_id': uid,
-              'first_name': firstNameController.text,
-              'last_name': lastNameController.text,
-              'email_or_phone': emailController.text,
-              'major': majorController.text,
-              'year_group': yeargroupController.text,
-              'student_id': int.parse(studentIdController.text),
+              'first_name': firstNameController!.text,
+              'last_name': lastNameController!.text,
+              'email_or_phone': emailController!.text,
+              'major': majorController!.text,
+              'year_group': yeargroupController!.text,
+              'student_id': int.parse(studentIdController!.text),
               'avatar_url': 'https://i.pravatar.cc/300',
               'best_food': 'jollof'
             };
@@ -137,6 +137,7 @@ class RegisterForm extends StatelessWidget {
 
               if (success["status"] == "success") {
                 // Show a success message or navigate to a success page
+                // ignore: use_build_context_synchronously
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(

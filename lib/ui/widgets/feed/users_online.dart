@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class UsersOnline extends StatefulWidget {
   final List<String> options;
 
-  UsersOnline({this.options});
+  UsersOnline({Key? key, required this.options}) : super(key: key);
 
   @override
   _UsersOnlineState createState() => _UsersOnlineState();

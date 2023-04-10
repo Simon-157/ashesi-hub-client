@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key key}) : super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,7 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Widget _loginWithButton({String image, bool isActive = false}) {
+  Widget _loginWithButton({String? image, bool isActive = false}) {
     return Container(
       width: 90,
       height: 70,

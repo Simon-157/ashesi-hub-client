@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../enums/constants.dart';
+
+/// The class is an API service that submits form data to a specified URL and returns the
+/// response.
 class ApiService {
   static Future<dynamic> submitFormData(Map<String, dynamic> formData) async {
     const apiUrl = '${Constants.apiBaseUrl}/register';

@@ -5,6 +5,8 @@ import 'package:hub_client/ui/widgets/profile/profile_dialog.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
 
+import '../services/getuser_api_service.dart';
+
 class TopBarContents extends StatefulWidget {
   // final double opacity;
 
@@ -27,6 +29,7 @@ class _TopBarContentsState extends State<TopBarContents> {
   ];
 
   bool _isProcessing = false;
+  String? firstname;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +146,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                     value ? _isHovering[3] = true : _isHovering[3] = false;
                   });
                 },
-                onTap: userEmail == null
+                onTap: firstname == null
                     ? () {
                         showDialog(
                           context: context,
@@ -151,7 +154,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                         );
                       }
                     : null,
-                child: userEmail == null
+                child: firstname == null
                     ? Text(
                         'Sign in',
                         style: TextStyle(
@@ -161,7 +164,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                     : Row(
                         children: [
                           UserProfileTooltip(
-                            username: 'John Doe',
+                            username: firstname!,
                             profileImageURL:
                                 'https://media.licdn.com/dms/image/C4D03AQGtQq1XVOBkwQ/profile-displayphoto-shrink_800_800/0/1652908954589?e=1686182400&v=beta&t=alMSG-NnmvDR84ClpDDXX_da35GgkCsaT_-RVRqQWTo',
                             bio: 'Software Engineer',
@@ -180,7 +183,7 @@ class _TopBarContentsState extends State<TopBarContents> {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            name ?? userEmail,
+                            name,
                             style: TextStyle(
                               color: _isHovering[3]
                                   ? Colors.white

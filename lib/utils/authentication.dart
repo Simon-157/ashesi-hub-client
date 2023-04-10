@@ -1,7 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/services/getuser_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -9,12 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-bool authSignedIn;
-String uid;
-String userEmail;
-var authUser;
+var uid = null;
 
-Future<String> registerWithEmailPassword(String email, String password) async {
+Future<String?> registerWithEmailPassword(String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
@@ -24,23 +19,17 @@ Future<String> registerWithEmailPassword(String email, String password) async {
     password: password,
   );
 
-  final User user = userCredential.user;
+  final User user = userCredential.user!;
 
-  if (user != null) {
-    // checking if uid or email is null
-    assert(user.uid != null);
-    assert(user.email != null);
+  assert(user.uid != null);
+  assert(user.email != null);
 
-    uid = user.uid;
-    userEmail = user.email;
+  uid = user.uid;
 
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
+  assert(!user.isAnonymous);
+  assert(await user.getIdToken() != null);
 
-    return 'Successfully registered, User UID: ${user.uid}';
-  }
-
-  return null;
+  return 'Successfully registered, User UID: ${user.uid}';
 }
 
 Future<String> signOut() async {
@@ -50,12 +39,11 @@ Future<String> signOut() async {
   prefs.setBool('auth', false);
 
   uid = null;
-  userEmail = null;
 
   return 'User signed out';
 }
 
-Future<String> signInWithEmailPassword(String email, String password) async {
+Future<String?> signInWithEmailPassword(String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
@@ -64,7 +52,7 @@ Future<String> signInWithEmailPassword(String email, String password) async {
     password: password,
   );
 
-  final User user = userCredential.user;
+  final User? user = userCredential.user;
 
   if (user != null) {
     // checking if uid or email is null
@@ -72,12 +60,11 @@ Future<String> signInWithEmailPassword(String email, String password) async {
     assert(user.email != null);
 
     uid = user.uid;
-    userEmail = user.email;
-    authUser = ApiService.getStudent(uid);
+    // authUser = ApiService.getStudent(uid);
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final User? currentUser = _auth.currentUser;
     assert(user.uid == currentUser?.uid);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -93,16 +80,17 @@ Future<String> signInWithEmailPassword(String email, String password) async {
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-String name;
-String imageUrl;
+late var name;
+late var imageUrl =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtqnnILA7WRYwvZGwpRLZp4-guqSwsDwnYrQ&usqp=CAU";
 
-Future<String> signInWithGoogle() async {
+Future<String?> signInWithGoogle() async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
-  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+      await googleSignInAccount!.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.credential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -111,7 +99,7 @@ Future<String> signInWithGoogle() async {
 
   final UserCredential userCredential =
       await _auth.signInWithCredential(credential);
-  final User user = userCredential.user;
+  final User? user = userCredential.user;
 
   if (user != null) {
     // Checking if email and name is null
@@ -121,14 +109,13 @@ Future<String> signInWithGoogle() async {
     assert(user.photoURL != null);
 
     uid = user.uid;
-    name = user.displayName;
-    userEmail = user.email;
-    imageUrl = user.photoURL;
+    name = user.displayName!;
+    imageUrl = user.photoURL!;
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final User? currentUser = _auth.currentUser;
     assert(user.uid == currentUser?.uid);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -149,8 +136,7 @@ void signOutGoogle() async {
 
   uid = null;
   name = null;
-  userEmail = null;
-  imageUrl = null;
+  imageUrl = "";
 
   print("User signed out of Google account");
 }
@@ -162,14 +148,13 @@ Future getUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool authSignedIn = prefs.getBool('auth') ?? false;
 
-  final User user = _auth.currentUser;
+  final User? user = _auth.currentUser;
 
   if (authSignedIn == true) {
     if (user != null) {
       uid = user.uid;
       name = user.displayName;
-      userEmail = user.email;
-      imageUrl = user.photoURL;
+      // imageUrl = user.photoURL;
     }
   }
 }

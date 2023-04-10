@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/app/router.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hub_client/providers/provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -40,10 +42,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Ashesi Hub',
-      routerConfig: router,
-    );
+    return MultiProvider(
+        providers: providers,
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Ashesi Hub',
+          routerConfig: router,
+        ));
   }
 }

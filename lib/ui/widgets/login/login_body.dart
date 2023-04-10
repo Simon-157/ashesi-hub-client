@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/ui/widgets/login/login_form.dart';
 
 class Body extends StatelessWidget {
-  Body({Key key}) : super(key: key);
+  Body({Key? key}) : super(key: key);
 
   final Shader sloganShade =
       const LinearGradient(colors: [Color(0xff070D14), Color(0xff85D1EE)])
@@ -86,7 +86,7 @@ class Body extends StatelessWidget {
                 vertical: MediaQuery.of(context).size.height / 20),
             child: Container(
               width: 320,
-              child: const Center(child: LoginForm()),
+              child: Center(child: LoginForm()),
             ),
           )
         ],

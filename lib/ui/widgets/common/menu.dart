@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key key}) : super(key: key);
+  const Menu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class Menu extends StatelessWidget {
 
   Widget _menuItem(
       {String title = 'Title Menu',
-      BuildContext context,
+      BuildContext? context,
       isActive = false,
       String route = '/'}) {
     return Padding(
@@ -51,7 +51,7 @@ class Menu extends StatelessWidget {
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: () {
-            context.go(route);
+            context!.go(route);
           },
           child: Column(
             children: [

@@ -19,11 +19,10 @@ class PostService extends Service {
     });
   }
 
+/// The function uploads a post to a Firestore database with information such as the user's email,
+/// image, and description.
   Future<void> uploadPost(String image, String description) async {
-    // Upload the image to Firebase Storage and get the download URL
-    // String mediaUrl = await uploadImage(posts, image);
 
-    // Get the current user's data
     DocumentSnapshot userDoc = await usersRef.doc(uid).get();
     UserModel user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
 
@@ -35,33 +34,37 @@ class PostService extends Service {
           'username': user.email,
           'ownerId': uid,
           'mediaUrl': image,
-          'description': description ?? 'No caption',
+          'description': description,
           'timestamp': FieldValue.serverTimestamp(),
         })
         .then((value) => print("post added"))
         .onError((error, stackTrace) => print(error));
   }
 
-//upload a comment
-  // uploadComment(String currentUserId, String comment, String postId,
-  //     String ownerId, String mediaUrl) async {
-  //   DocumentSnapshot doc = await usersRef.doc(currentUserId).get();
-  //   var user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-  //   await commentRef.doc(postId).collection("comments").add({
-  //     "username": user.username,
-  //     "comment": comment,
-  //     "timestamp": Timestamp.now(),
-  //     "userDp": user.photoUrl,
-  //     "userId": user.id,
-  //   });
-  //   bool isNotMe = ownerId != currentUserId;
-  //   if (isNotMe) {
-  //     addCommentToNotification("comment", comment, user.username, user.id,
-  //         postId, mediaUrl, ownerId, user.photoUrl);
-  //   }
-  // }
 
-//add the comment to notification collection
+
+/// The function uploads a comment to a post and sends a notification to the post owner if the comment
+/// is made by someone other than the owner.
+  uploadComment(String currentUserId, String comment, String postId,
+      String ownerId, String mediaUrl) async {
+    DocumentSnapshot doc = await usersRef.doc(currentUserId).get();
+    var user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    await commentRef.doc(postId).collection("comments").add({
+      "username": user.username,
+      "comment": comment,
+      "timestamp": Timestamp.now(),
+      "userDp": user.avatar_url,
+      "userId": user.user_id,
+    });
+    bool isNotMe = ownerId != currentUserId;
+    if (isNotMe) {
+      addCommentToNotification("comment", comment, user.username, user.user_id,
+          postId, mediaUrl, ownerId, user.avatar_url);
+    }
+  }
+
+
+/// The function adds a comment notification to a Firestore collection.
   addCommentToNotification(
       String type,
       String commentData,
@@ -83,7 +86,9 @@ class PostService extends Service {
     });
   }
 
-//add the likes to the notfication collection
+
+
+/// The function adds a notification to a Firestore collection with specific fields.
   addLikesToNotification(String type, String username, String userId,
       String postId, String mediaUrl, String ownerId, String userDp) async {
     await notificationRef
@@ -93,7 +98,7 @@ class PostService extends Service {
         .set({
       "type": type,
       "username": username,
-      "userId": firebaseAuth.currentUser.uid,
+      "userId": firebaseAuth.currentUser!.uid,
       "userDp": userDp,
       "postId": postId,
       "mediaUrl": mediaUrl,
@@ -101,7 +106,10 @@ class PostService extends Service {
     });
   }
 
-  //remove likes from notification
+
+
+/// The function removes a notification from a user's collection if the current user is not the owner of
+/// the notification.
   removeLikeFromNotification(
       String ownerId, String postId, String currentUser) async {
     bool isNotMe = currentUser != ownerId;

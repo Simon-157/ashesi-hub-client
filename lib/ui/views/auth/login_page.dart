@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/ui/widgets/login/login_body.dart';
 import 'package:hub_client/ui/widgets/common/menu.dart';
 
+
+/// The LoginPage class returns a Scaffold widget with a gradient background and a ListView containing a
+/// Menu and Body widget.
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class LoginPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width / 7),
           children: [
-            const Menu(),
+            Menu(),
             Body(),
           ],
           

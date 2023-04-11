@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hub_client/services/email_notification.dart';
 import 'package:hub_client/services/posts_service.dart';
 import 'package:hub_client/providers/post_view.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -75,20 +77,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // if (_image != null) ...[
-              // Container(
-              //   height: 100,
-              //   width: 200,
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       image: MemoryImage(
-              //         // Decoding from base64 to bytes.
-              //         base64.decode(img.toString()),
-              //       ),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
+              //  TODO DISPLAY UPLOADED IMAGE HERE
               const SizedBox(height: 16),
               // ],
               Row(
@@ -146,9 +135,31 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         child: IconButton(
                           icon: const Icon(Icons.send_rounded),
                           onPressed: () {
-                            postService.uploadPost(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDDpg-HtJ5hNVcPj3QDk6q0xmOmQYrdP9jw',
-                                _description);
+                            postService
+                                .uploadPost(
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDDpg-HtJ5hNVcPj3QDk6q0xmOmQYrdP9jw',
+                                    _description)
+                                .then((value) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Post created'),
+                                    content: const Text(
+                                        'Your post has been successfully created.'),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          context.go("/feeds");
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
                           },
                         ),
                       ),

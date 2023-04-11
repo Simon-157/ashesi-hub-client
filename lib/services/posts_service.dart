@@ -19,32 +19,35 @@ class PostService extends Service {
     });
   }
 
-/// The function uploads a post to a Firestore database with information such as the user's email,
-/// image, and description.
+  /// The function uploads a post to a Firestore database with information such as the user's email,
+  /// image, and description.
   Future<void> uploadPost(String image, String description) async {
-
     DocumentSnapshot userDoc = await usersRef.doc(uid).get();
     UserModel user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
 
-    await postRef
-        .doc()
-        .set({
-          'id': postRef.id,
-          'postId': postRef.id,
-          'username': user.email,
-          'ownerId': uid,
-          'mediaUrl': image,
-          'description': description,
-          'timestamp': FieldValue.serverTimestamp(),
-        })
-        .then((value) => print("post added"))
-        .onError((error, stackTrace) => print(error));
+    DocumentReference newPostRef =
+        postRef.doc(); // create a new document reference
+    String newPostId =
+        newPostRef.id; // get the ID of the new document reference
+
+    await newPostRef.set({
+      'username': user.email,
+      'ownerId': uid,
+      'mediaUrl': image,
+      'description': description,
+      'timestamp': FieldValue.serverTimestamp(),
+    }).then((value) {
+      // update the document with the ID and postId fields
+      newPostRef.update({
+        'id': newPostId,
+        'postId': newPostId,
+      });
+      print("post added");
+    }).onError((error, stackTrace) => null);
   }
 
-
-
-/// The function uploads a comment to a post and sends a notification to the post owner if the comment
-/// is made by someone other than the owner.
+  /// The function uploads a comment to a post and sends a notification to the post owner if the comment
+  /// is made by someone other than the owner.
   uploadComment(String currentUserId, String comment, String postId,
       String ownerId, String mediaUrl) async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId).get();
@@ -63,8 +66,7 @@ class PostService extends Service {
     }
   }
 
-
-/// The function adds a comment notification to a Firestore collection.
+  /// The function adds a comment notification to a Firestore collection.
   addCommentToNotification(
       String type,
       String commentData,
@@ -86,9 +88,7 @@ class PostService extends Service {
     });
   }
 
-
-
-/// The function adds a notification to a Firestore collection with specific fields.
+  /// The function adds a notification to a Firestore collection with specific fields.
   addLikesToNotification(String type, String username, String userId,
       String postId, String mediaUrl, String ownerId, String userDp) async {
     await notificationRef
@@ -106,10 +106,8 @@ class PostService extends Service {
     });
   }
 
-
-
-/// The function removes a notification from a user's collection if the current user is not the owner of
-/// the notification.
+  /// The function removes a notification from a user's collection if the current user is not the owner of
+  /// the notification.
   removeLikeFromNotification(
       String ownerId, String postId, String currentUser) async {
     bool isNotMe = currentUser != ownerId;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
-import 'package:hub_client/ui/widgets/feed/post.dart';
+import 'package:hub_client/ui/widgets/feed/post/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/utils/firebase_collections.dart';

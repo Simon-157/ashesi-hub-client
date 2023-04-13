@@ -66,13 +66,13 @@ class _GoogleButtonState extends State<GoogleButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const <Widget>[
                     Image(
-                      image: AssetImage("images/google.png"),
+                      image: AssetImage("images/microsoft.png"),
                       height: 30.0,
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: Text(
-                        'Continue with Google',
+                        'Continue with Microsoft',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.blueGrey,

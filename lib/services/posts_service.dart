@@ -35,13 +35,16 @@ class PostService extends Service {
       'ownerId': uid,
       'mediaUrl': image,
       'description': description,
-      'timestamp': FieldValue.serverTimestamp(),
+      'timestamp': FieldValue.serverTimestamp(),  
+      'email_sent': false
     }).then((value) {
       // update the document with the ID and postId fields
       newPostRef.update({
         'id': newPostId,
         'postId': newPostId,
       });
+      // var em = ApiService.sendEmail(newPostId);
+      // print(em);
       print("post added");
     }).onError((error, stackTrace) => null);
   }

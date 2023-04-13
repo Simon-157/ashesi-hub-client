@@ -14,7 +14,7 @@ class ApiService {
     final response = await http.get(url, headers: headers);
     print(response);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(response.body)['data'];
     } else {
       throw Exception('Failed to submit form data');
     }

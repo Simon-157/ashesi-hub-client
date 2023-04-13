@@ -23,7 +23,7 @@ class _AuthDialogState extends State<AuthDialog> {
   bool _isLoggingIn = false;
 
   String loginStatus = "";
-  Color loginStringColor = Colors.green;
+  Color loginStringColor = const Color.fromARGB(255, 187, 227, 155);
 
   String? _validateEmail(String value) {
     value = value.trim();
@@ -68,7 +68,7 @@ class _AuthDialogState extends State<AuthDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: const Color(0xFF05182D),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -76,17 +76,27 @@ class _AuthDialogState extends State<AuthDialog> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF05182D),
+                  Color(0xFF092A45),
+                  Color(0xFF0D2339)
+                ],
+              ),
+            ),
             width: 400,
-            color: Theme.of(context).backgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Center(
+                const Center(
                   child: Text(
                     'ASHESI HUB',
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.headline1?.color,
+                      color: Color.fromARGB(255, 176, 190, 197),
                       fontSize: 24,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
@@ -95,8 +105,8 @@ class _AuthDialogState extends State<AuthDialog> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(
+                const Padding(
+                  padding: EdgeInsets.only(
                     left: 20.0,
                     bottom: 8,
                   ),
@@ -104,11 +114,9 @@ class _AuthDialogState extends State<AuthDialog> {
                     'Email address',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2?.color,
+                      color: Color.fromARGB(255, 176, 190, 197),
                       fontSize: 18,
-                      // fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
-                      // letterSpacing: 3,
                     ),
                   ),
                 ),
@@ -159,8 +167,8 @@ class _AuthDialogState extends State<AuthDialog> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(
+                const Padding(
+                  padding: EdgeInsets.only(
                     left: 20.0,
                     bottom: 8,
                   ),
@@ -168,10 +176,9 @@ class _AuthDialogState extends State<AuthDialog> {
                     'Password',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2?.color,
+                      color: Color.fromARGB(255, 176, 190, 197),
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      // letterSpacing: 3,
                     ),
                   ),
                 ),
@@ -235,7 +242,6 @@ class _AuthDialogState extends State<AuthDialog> {
                           child: TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.blueGrey[800],
-                              // hoverColor: Colors.blueGrey[900],
                               padding: const EdgeInsets.only(
                                 top: 15.0,
                                 bottom: 15.0,
@@ -263,16 +269,17 @@ class _AuthDialogState extends State<AuthDialog> {
                                   setState(() {
                                     loginStatus = 'logged in';
                                     loginStringColor = Colors.green;
+                                    context.pop(const AuthDialog());
                                   });
                                   Future.delayed(
                                       const Duration(milliseconds: 500), () {
                                     context.go('/?loginstatus=$loginStatus');
+                                    Navigator.pop(context);
                                   });
                                 }).catchError((error) {
                                   print('Login Error: $error');
                                   setState(() {
-                                    loginStatus =
-                                        'Error occurred while logging in';
+                                    loginStatus = "Invalid user credentials";
                                     loginStringColor = Colors.red;
                                   });
                                 });
@@ -314,7 +321,7 @@ class _AuthDialogState extends State<AuthDialog> {
                       const SizedBox(width: 20),
                       Flexible(
                         flex: 1,
-                        child: Container(
+                        child: SizedBox(
                           width: double.maxFinite,
                           child: TextButton(
                             style: ButtonStyle(
@@ -438,16 +445,15 @@ class _AuthDialogState extends State<AuthDialog> {
                 const SizedBox(height: 30),
                 Center(child: GoogleButton()),
                 const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'By proceeding, you agree to our Terms of Use and confirm you have read our Privacy Policy.',
+                    'Proceed to enjoy the goodness of the campus social network',
                     maxLines: 2,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.subtitle2?.color,
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
-                      // letterSpacing: 3,
+                      color: Color.fromARGB(255, 176, 190, 197),
                     ),
                   ),
                 ),

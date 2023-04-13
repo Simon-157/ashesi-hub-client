@@ -8,6 +8,7 @@ import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/ui/views/profileview/profile_page.dart';
 import 'package:hub_client/providers/post_view.dart';
+import 'package:hub_client/ui/widgets/common/image_upload.dart';
 import 'package:provider/provider.dart';
 
 bool isAuthenticated() {
@@ -27,6 +28,12 @@ final GoRouter router = GoRouter(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginPage();
+          },
+        ),
+        GoRoute(
+          path: 'try',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ImageUploader();
           },
         ),
         GoRoute(

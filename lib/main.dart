@@ -9,13 +9,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-        apiKey: "AIzaSyApTxXac3Gi9h6UbrImRPjSt6pNJrYmugc",
-        authDomain: "ashesi-hub-b528e.firebaseapp.com",
-        projectId: "ashesi-hub-b528e",
-        storageBucket: "ashesi-hub-b528e.appspot.com",
-        messagingSenderId: "153580039671",
-        appId: "1:153580039671:web:599ad849001589de6612f2",
-        measurementId: "G-0VBY4D0HM3"),
+        apiKey: "AIzaSyAxcXYC0IyTBZ19NgPnHvAFeHHyw5R_mNM",
+        authDomain: "simon-election.firebaseapp.com",
+        projectId: "simon-election",
+        storageBucket: "simon-election.appspot.com",
+        messagingSenderId: "982573082905",
+        appId: "1:982573082905:web:573b97a0cdf1dc1d82bd88"),
   );
   runApp(const MyApp());
 }

@@ -34,7 +34,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
     'beauty'
   ];
   Set<String> selectedFilters = {};
-
+  String searchQuery = "";
   @override
   void initState() {
     scrollController.addListener(() async {
@@ -51,6 +51,8 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    int notificationCount = 2; // Replace with actual count
+
     super.build(context);
     return Container(
         decoration: const BoxDecoration(
@@ -106,6 +108,40 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                 onPressed: () {
                   context.go('/feeds/create_post');
                 },
+              ),
+              const SizedBox(width: 20.0),
+              Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications_active_rounded,
+                      size: 30.0,
+                    ),
+                    onPressed: () {
+                      context.go('/notifications');
+                    },
+                  ),
+                  if (notificationCount > 0)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(4.0),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          notificationCount.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(width: 20.0),
               IconButton(
@@ -176,7 +212,9 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                       ),
                     ),
                   ),
-                  UsersOnline(options: filterOptions),
+                  Column(children: [
+                    UsersOnline(options: filterOptions)
+                  ])
                 ],
               ),
             ),

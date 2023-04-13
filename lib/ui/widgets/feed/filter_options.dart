@@ -11,6 +11,7 @@ class FilterOptions extends StatefulWidget {
 
 class _FilterOptionsState extends State<FilterOptions> {
   List<String> selectedOptions = [];
+  String filterText = '';
 
   void _handleOptionSelect(String option) {
     setState(() {
@@ -34,18 +35,33 @@ class _FilterOptionsState extends State<FilterOptions> {
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
-        ], // Set background color
-
+        ],
         borderRadius: const BorderRadius.all(
-          Radius.circular(5.0), // Set border radius
+          Radius.circular(5.0),
         ),
       ),
-      width: 300, // Set width constraint
-      height: 500, // Set height constraint
-
+      width: 300,
+      height: 500,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search options...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  filterText = value;
+                });
+              },
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -55,11 +71,18 @@ class _FilterOptionsState extends State<FilterOptions> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0), // Add left padding
+              padding: const EdgeInsets.only(left: 16.0),
               child: ListView.builder(
                 itemCount: widget.options.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return buildCheckboxListTile(widget.options[index]);
+                  final optionText = widget.options[index];
+                  if (optionText
+                      .toLowerCase()
+                      .contains(filterText.toLowerCase())) {
+                    return buildCheckboxListTile(optionText);
+                  } else {
+                    return Container();
+                  }
                 },
               ),
             ),

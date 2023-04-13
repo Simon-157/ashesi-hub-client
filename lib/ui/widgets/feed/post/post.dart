@@ -21,7 +21,7 @@ class UserPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: SizedBox(
-            width: 500,
+            width: 550,
             child: CustomCard(
               onTap: () {},
               borderRadius: BorderRadius.circular(10.0),
@@ -53,7 +53,7 @@ class UserPost extends StatelessWidget {
                               imageUrl: post.mediaUrl,
                               height: 150.0,
                               fit: BoxFit.cover,
-                              width: 100,
+                              width: 300,
                             ),
                           ),
                           Padding(
@@ -184,6 +184,4 @@ class UserPost extends StatelessWidget {
               ),
             )));
   }
-
-
 }

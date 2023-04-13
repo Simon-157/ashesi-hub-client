@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/services/getuser_api_service.dart';
+import 'package:hub_client/ui/widgets/profile/change_profile_image_dialog.dart';
 
 class MyStudentWidget extends StatelessWidget {
-  // ignore: prefer_typing_uninitialized_variables
   final String profileId;
 
   const MyStudentWidget({Key? key, required this.profileId}) : super(key: key);
@@ -14,7 +14,7 @@ class MyStudentWidget extends StatelessWidget {
       future: ApiService.getStudent(profileId),
       builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
         if (snapshot.hasData) {
-          final student = snapshot.data!['data'];
+          final student = snapshot.data!;
           print(student);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,11 +41,33 @@ class MyStudentWidget extends StatelessWidget {
                                 ),
                               ),
                             )
-                          : CircleAvatar(
-                              radius: 40.0,
-                              backgroundImage: CachedNetworkImageProvider(
-                                student['avatar_url'],
-                              ),
+                          : Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 40.0,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    student['avatar_url'],
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.camera_alt),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CameraDialog(
+                                              currentAvatarUri:
+                                                  student['avatar_url'],
+                                              profileId: profileId);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                     ),
                     Center(
@@ -67,7 +89,8 @@ class MyStudentWidget extends StatelessWidget {
                                       style: const TextStyle(
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.w900,
-                                          color: Color.fromARGB(255, 183, 240, 239)),
+                                          color: Color.fromARGB(
+                                              255, 183, 240, 239)),
                                       maxLines: null,
                                     ),
                                   ),
@@ -78,7 +101,8 @@ class MyStudentWidget extends StatelessWidget {
                                       style: const TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromARGB(255, 183, 240, 239)),
+                                          color: Color.fromARGB(
+                                              255, 183, 240, 239)),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),

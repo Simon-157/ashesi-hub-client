@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/ui/views/auth/login_page.dart';
-import 'package:hub_client/ui/widgets/profile/profile_dialog.dart';
+import 'package:hub_client/models/user_model.dart';
+import 'package:hub_client/state_preference/user_store.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
-
-import '../services/getuser_api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TopBarContents extends StatefulWidget {
-  // final double opacity;
-
-  // TopBarContents(this.opacity);
+  const TopBarContents({Key? key}) : super(key: key);
 
   @override
   _TopBarContentsState createState() => _TopBarContentsState();
 }
 
 class _TopBarContentsState extends State<TopBarContents> {
-  final List _isHovering = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
-
+  final List _isHovering = [false,false,false,false,false,false, false,false];
+  UserModel? user;
   bool _isProcessing = false;
-  String? firstname;
+
+  @override
+  void initState() {
+    super.initState();
+    returnUser().then((value) => setState(() {
+          user = value;
+        }));
+  }
+
+  Future<UserModel?> returnUser() async {
+    UserModel? user = await getAuthUser();
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,217 +37,122 @@ class _TopBarContentsState extends State<TopBarContents> {
 
     return PreferredSize(
       preferredSize: Size(screenSize.width, 1000),
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'images/logo_ashesi.png',
-                width: 50,
-                height: 50,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/logo_ashesi.png',
+              width: 50,
+              height: 50,
+            ),
+            Text(
+              'ashHub',
+              style: TextStyle(
+                color: Colors.blueGrey[100],
+                fontSize: 20,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w400,
+                letterSpacing: 3,
               ),
-              Text(
-                'ashHub',
-                style: TextStyle(
-                  color: Colors.blueGrey[100],
-                  fontSize: 20,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 3,
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: screenSize.width / 8),
-                    InkWell(
-                      onHover: (value) {
-                        setState(() {
-                          value
-                              ? _isHovering[0] = true
-                              : _isHovering[0] = false;
-                        });
-                      },
-                      onTap: () => {context.go('/feeds')},
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Discover',
-                            style: TextStyle(
-                              color: _isHovering[0]
-                                  ? Colors.blue[200]
-                                  : Colors.white,
-                            ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: screenSize.width / 8),
+                  InkWell(
+                    onHover: (value) {
+                      setState(() {
+                        value ? _isHovering[0] = true : _isHovering[0] = false;
+                      });
+                    },
+                    onTap: () => {context.go('/feeds')},
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Feeds',
+                          style: TextStyle(
+                            color: _isHovering[0]
+                                ? Colors.blue[200]
+                                : Colors.white,
                           ),
-                          const SizedBox(height: 5),
-                          Visibility(
-                            maintainAnimation: true,
-                            maintainState: true,
-                            maintainSize: true,
-                            visible: _isHovering[0],
-                            child: Container(
-                              height: 2,
-                              width: 20,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: screenSize.width / 20),
-                    InkWell(
-                      onHover: (value) {
-                        setState(() {
-                          value
-                              ? _isHovering[1] = true
-                              : _isHovering[1] = false;
-                        });
-                      },
-                      onTap: () {},
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Contact Us',
-                            style: TextStyle(
-                              color: _isHovering[1]
-                                  ? Colors.blue[200]
-                                  : Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Visibility(
-                            maintainAnimation: true,
-                            maintainState: true,
-                            maintainSize: true,
-                            visible: _isHovering[1],
-                            child: Container(
-                              height: 2,
-                              width: 20,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: screenSize.width / 50,
-              ),
-              InkWell(
-                onHover: (value) {
-                  setState(() {
-                    value ? _isHovering[3] = true : _isHovering[3] = false;
-                  });
-                },
-                onTap: firstname == null
-                    ? () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AuthDialog(),
-                        );
-                      }
-                    : null,
-                child: firstname == null
-                    ? Text(
-                        'Sign in',
-                        style: TextStyle(
-                          color: _isHovering[3] ? Colors.white : Colors.white70,
                         ),
-                      )
-                    : Row(
-                        children: [
-                          UserProfileTooltip(
-                            username: firstname!,
-                            profileImageURL:
-                                'https://media.licdn.com/dms/image/C4D03AQGtQq1XVOBkwQ/profile-displayphoto-shrink_800_800/0/1652908954589?e=1686182400&v=beta&t=alMSG-NnmvDR84ClpDDXX_da35GgkCsaT_-RVRqQWTo',
-                            bio: 'Software Engineer',
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundImage: imageUrl != null
-                                  ? NetworkImage(imageUrl)
-                                  : null,
-                              child: imageUrl == null
-                                  ? const Icon(
-                                      Icons.account_circle,
-                                      size: 30,
-                                    )
-                                  : Container(),
-                            ),
+                        const SizedBox(height: 5),
+                        Visibility(
+                          maintainAnimation: true,
+                          maintainState: true,
+                          maintainSize: true,
+                          visible: _isHovering[0],
+                          child: Container(
+                            height: 2,
+                            width: 20,
+                            color: Colors.white,
                           ),
-                          const SizedBox(width: 5),
-                          Text(
-                            name,
-                            style: TextStyle(
-                              color: _isHovering[3]
-                                  ? Colors.white
-                                  : Colors.white70,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.blueGrey),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              overlayColor: MaterialStateProperty.all(
-                                  Colors.blueGrey[800]),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                            ),
-                            onPressed: _isProcessing
-                                ? null
-                                : () async {
-                                    setState(() {
-                                      _isProcessing = true;
-                                    });
-                                    await signOut().then((result) {
-                                      print(result);
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          fullscreenDialog: true,
-                                          builder: (context) =>
-                                              const LoginPage(),
-                                        ),
-                                      );
-                                    }).catchError((error) {
-                                      print('Sign Out Error: $error');
-                                    });
-                                    setState(() {
-                                      _isProcessing = false;
-                                    });
-                                  },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8.0,
-                                bottom: 8.0,
-                              ),
-                              child: _isProcessing
-                                  ? const CircularProgressIndicator()
-                                  : const Text(
-                                      'Sign out',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: screenSize.width / 50,
+            ),
+            InkWell(
+              onHover: (value) {
+                setState(() {
+                  value ? _isHovering[3] = true : _isHovering[3] = false;
+                });
+              },
+              onTap: user == null
+                  ? () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const AuthDialog(),
+                      );
+                    }
+                  : null,
+              child: user == null
+                  ? Text(
+                      'sign in',
+                      style: TextStyle(
+                        color: _isHovering[3] ? Colors.white : Colors.white70,
+                      ),
+                    )
+                  : TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blueGrey),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.blueGrey[800]),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                      onPressed: _isProcessing
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isProcessing = true;
+                              });
+                              await signOut().then((_) async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.remove('user_id');
+                              });
+                            },
+                      child: Text('Sign Out'),
+                    ),
+            ),
+          ],
         ),
       ),
     );

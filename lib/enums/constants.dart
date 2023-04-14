@@ -1,3 +1,4 @@
 class Constants {
-  static const String apiBaseUrl = 'http://127.0.0.1:1616';
+  static const String apiBaseUrl =
+      'https://us-central1-simon-election.cloudfunctions.net/ashesi-hub';
 }

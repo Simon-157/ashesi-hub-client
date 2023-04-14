@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/components/card_custom.dart';
 import 'package:hub_client/components/custome_image.dart';
 import 'package:hub_client/models/post_model.dart';
-import 'package:hub_client/ui/widgets/feed/post/post_buttons.dart';
-import 'package:hub_client/ui/widgets/feed/post/post_view.dart';
+import 'package:hub_client/ui/widgets/post/post_buttons.dart';
+import 'package:hub_client/ui/widgets/post/post_interraction_counts.dart';
+import 'package:hub_client/ui/widgets/post/post_owner.dart';
+import 'package:hub_client/ui/widgets/post/post_view.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

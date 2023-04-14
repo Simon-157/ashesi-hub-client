@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/services/base_service.dart';
 import 'package:hub_client/utils/authentication.dart';
@@ -35,7 +36,7 @@ class PostService extends Service {
       'ownerId': uid,
       'mediaUrl': image,
       'description': description,
-      'timestamp': FieldValue.serverTimestamp(),  
+      'timestamp': FieldValue.serverTimestamp(),
       'email_sent': false
     }).then((value) {
       // update the document with the ID and postId fields
@@ -91,41 +92,25 @@ class PostService extends Service {
     });
   }
 
-  /// The function adds a notification to a Firestore collection with specific fields.
-  addLikesToNotification(String type, String username, String userId,
-      String postId, String mediaUrl, String ownerId, String userDp) async {
-    await notificationRef
-        .doc(ownerId)
-        .collection('notifications')
-        .doc(postId)
-        .set({
-      "type": type,
-      "username": username,
-      "userId": firebaseAuth.currentUser!.uid,
-      "userDp": userDp,
-      "postId": postId,
-      "mediaUrl": mediaUrl,
-      "timestamp": Timestamp.now(),
-    });
-  }
-
-  /// The function removes a notification from a user's collection if the current user is not the owner of
-  /// the notification.
-  removeLikeFromNotification(
-      String ownerId, String postId, String currentUser) async {
-    bool isNotMe = currentUser != ownerId;
-
-    if (isNotMe) {
-      DocumentSnapshot doc = await usersRef.doc(currentUser).get();
-      var user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-      notificationRef
-          .doc(ownerId)
-          .collection('notifications')
-          .doc(postId)
-          .get()
-          .then((doc) => {
-                if (doc.exists) {doc.reference.delete()}
-              });
-    }
-  }
 }
+
+
+
+//  addLikesToNotification(String type, String username, String userId,
+//       String postId, String mediaUrl, String ownerId, String userDp) async {
+        
+//     await notificationRef
+//         .doc(ownerId)
+//         .collection('notifications')
+//         .doc(postId)
+//         .set({
+//       "type": type,
+//       "username": username,
+//       "userId": firebaseAuth.currentUser!.uid,
+//       "userDp": userDp,
+//       "postId": postId,
+//       "mediaUrl": mediaUrl,
+//       "timestamp": Timestamp.now(),
+//     });
+//   }
+

@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
+import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
-import 'package:hub_client/ui/widgets/feed/post/post.dart';
+import 'package:hub_client/ui/widgets/post/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/loaders.dart';
-// import 'package:social_media_app/chats/recent_chats.dart';
 
 class Feeds extends StatefulWidget {
   const Feeds({Key? key}) : super(key: key);
@@ -19,6 +19,10 @@ class Feeds extends StatefulWidget {
 
 class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openNotificationSidebar() {
+    scaffoldKey.currentState?.openDrawer();
+  }
 
   int page = 5;
   bool loadingMore = false;
@@ -55,14 +59,14 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
 
     super.build(context);
     return Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF05182D), Color(0xFF092A45), Color(0xFF0D2339)],
-          ),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF05182D), Color(0xFF092A45), Color(0xFF0D2339)],
         ),
-        child: Scaffold(
+      ),
+      child: Scaffold(
           key: scaffoldKey,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -113,14 +117,11 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
               Stack(
                 children: [
                   IconButton(
-                    icon: const Icon(
-                      Icons.notifications_active_rounded,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      context.go('/notifications');
-                    },
-                  ),
+                      icon: const Icon(
+                        Icons.notifications_active_rounded,
+                        size: 30.0,
+                      ),
+                      onPressed: () => {openNotificationSidebar()}),
                   if (notificationCount > 0)
                     Positioned(
                       top: 0,
@@ -212,14 +213,13 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                       ),
                     ),
                   ),
-                  Column(children: [
-                    UsersOnline(options: filterOptions)
-                  ])
+                  Column(children: [UsersOnline(options: filterOptions)])
                 ],
               ),
             ),
           ),
-        ));
+          drawer: CustomDrawer()),
+    );
   }
 
   @override

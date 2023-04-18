@@ -66,7 +66,10 @@ class _FilterOptionsState extends State<FilterOptions> {
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Filter options:',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 94, 237, 189)),
             ),
           ),
           Expanded(
@@ -94,7 +97,14 @@ class _FilterOptionsState extends State<FilterOptions> {
 
   Widget buildCheckboxListTile(String optionText) {
     return CheckboxListTile(
-      title: Text(optionText),
+      tileColor:const Color.fromARGB(255, 219, 239, 239),
+      checkColor: const Color.fromARGB(255, 219, 239, 239),
+      title: Text(
+        optionText,
+        style: const TextStyle(
+          color: Color.fromARGB(255, 219, 239, 239),
+        ),
+      ),
       value: selectedOptions.contains(optionText),
       onChanged: (value) => _handleOptionSelect(optionText),
     );

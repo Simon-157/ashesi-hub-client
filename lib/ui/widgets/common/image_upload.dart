@@ -44,19 +44,17 @@ class _ImageUploaderState extends State<ImageUploader> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        IconButton(
+          onPressed: _pickImage,
+          icon: const Icon(Icons.image_outlined),
+        ),
         if (imageUrl != null)
           CachedNetworkImage(
             imageUrl: imageUrl!,
+            height: 300,
             width: 300,
-            height: 250,
           ),
-        ElevatedButton.icon(
-          onPressed: _pickImage,
-          icon: const Icon(Icons.image),
-          label: const Text('Tap to select image'),
-        ),
       ],
     );
   }
-
 }

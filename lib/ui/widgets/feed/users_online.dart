@@ -103,6 +103,7 @@ class _UsersOnlineState extends State<UsersOnline> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
+               color: Color.fromARGB(255, 219, 239, 239), 
               ),
             ),
             Text(

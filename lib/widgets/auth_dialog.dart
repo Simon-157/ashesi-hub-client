@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/utils/authentication.dart';
-import 'google_sign_in_button.dart';
+import 'package:hub_client/widgets/microsoft_signin_button.dart';
 
 class AuthDialog extends StatefulWidget {
   const AuthDialog({Key? key}) : super(key: key);
@@ -262,6 +262,7 @@ class _AuthDialogState extends State<AuthDialog> {
                                           textControllerPassword.text) ==
                                       null) {
                                 await signInWithEmailPassword(
+                                  context,
                                   textControllerEmail.text,
                                   textControllerPassword.text,
                                 ).then((result) {
@@ -269,12 +270,12 @@ class _AuthDialogState extends State<AuthDialog> {
                                   setState(() {
                                     loginStatus = 'logged in';
                                     loginStringColor = Colors.green;
+                                    context.go('/?loginstatus=$loginStatus');
                                     context.pop(const AuthDialog());
                                   });
                                   Future.delayed(
                                       const Duration(milliseconds: 500), () {
                                     context.go('/?loginstatus=$loginStatus');
-                                    Navigator.pop(context);
                                   });
                                 }).catchError((error) {
                                   print('Login Error: $error');
@@ -443,7 +444,7 @@ class _AuthDialogState extends State<AuthDialog> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Center(child: GoogleButton()),
+                const Center(child: MicrosoftButton()),
                 const SizedBox(height: 30),
                 const Padding(
                   padding: EdgeInsets.all(8.0),

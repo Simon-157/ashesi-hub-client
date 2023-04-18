@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
+import 'package:provider/provider.dart';
 
 buildUser(BuildContext context, PostModel post) {
-  bool isMe = uid != null && uid == post.ownerId;
+  final userState = Provider.of<UserState>(context, listen: false);
+  String? currentUserId = userState.uid;
+  bool isMe = currentUserId != null && currentUserId == post.ownerId;
 
   return StreamBuilder(
     stream: usersRef.doc(post.ownerId).snapshots(),

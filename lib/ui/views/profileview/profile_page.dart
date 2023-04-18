@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/ui/views/profileview/profile_details.dart';
 import 'package:hub_client/ui/widgets/profile/profile_edit_dialog.dart';
+import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
 class Profile extends StatefulWidget {
@@ -70,10 +71,12 @@ class _ProfileState extends State<Profile> {
                   ? Center(
                       child: Padding(
                         padding: const EdgeInsets.only(right: 25.0),
-                        child: GestureDetector(
+                        child: InkWell(
+                          mouseCursor: MaterialStateMouseCursor.clickable,
+                          // child: GestureDetector(
                           onTap: () {
-                            firebaseAuth.signOut();
-                            context.go('/login');
+                            signOut(context);
+                            context.go('/');
                           },
                           child: const Text(
                             'Log Out',

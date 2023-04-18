@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/user_model.dart';
+import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/state_preference/user_store.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class TopBarContents extends StatefulWidget {
   const TopBarContents({Key? key}) : super(key: key);
@@ -14,27 +17,32 @@ class TopBarContents extends StatefulWidget {
 }
 
 class _TopBarContentsState extends State<TopBarContents> {
-  final List _isHovering = [false,false,false,false,false,false, false,false];
-  UserModel? user;
+  final List _isHovering = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+  // UserModel? user;
   bool _isProcessing = false;
+  final StreamController<UserModel?> _userStreamController =
+      StreamController<UserModel?>();
 
-  @override
-  void initState() {
-    super.initState();
-    returnUser().then((value) => setState(() {
-          user = value;
-        }));
-  }
-
-  Future<UserModel?> returnUser() async {
-    UserModel? user = await getAuthUser();
+  Stream<UserModel?> returnUser() {
+    Stream<UserModel?> user = getAuthUser(context, _userStreamController);
+    print('user signed in  = ${user.isEmpty}');
     return user;
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-
+    final userState = Provider.of<UserState>(context, listen: false);
+    print("provider state ----------- ${userState.uid}");
     return PreferredSize(
       preferredSize: Size(screenSize.width, 1000),
       child: Padding(
@@ -102,56 +110,94 @@ class _TopBarContentsState extends State<TopBarContents> {
               width: screenSize.width / 50,
             ),
             InkWell(
-              onHover: (value) {
-                setState(() {
-                  value ? _isHovering[3] = true : _isHovering[3] = false;
-                });
-              },
-              onTap: user == null
-                  ? () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => const AuthDialog(),
-                      );
-                    }
-                  : null,
-              child: user == null
-                  ? Text(
-                      'sign in',
-                      style: TextStyle(
-                        color: _isHovering[3] ? Colors.white : Colors.white70,
-                      ),
-                    )
-                  : TextButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blueGrey),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.blueGrey[800]),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                      ),
-                      onPressed: _isProcessing
-                          ? null
-                          : () async {
+                onHover: (value) {
+                  setState(() {
+                    value ? _isHovering[3] = true : _isHovering[3] = false;
+                  });
+                },
+                child: StreamBuilder<UserModel?>(
+                    stream: _userStreamController
+                        .stream, // Listen to the stream controller
+                    builder: (context, snapshot) {
+                      print(snapshot.hasData);
+                      if (snapshot.hasData) {
+                        UserModel? user = snapshot.data;
+                        // Render the UI with the user's data
+                        onTap:
+                        user == null
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const AuthDialog(),
+                                );
+                              }
+                            : null;
+                        return user == null
+                            ? Text(
+                                'sign in',
+                                style: TextStyle(
+                                  color: _isHovering[3]
+                                      ? Colors.white
+                                      : Colors.white70,
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () async {
+                                  setState(() {
+                                    _isProcessing = true;
+                                  });
+                                  await signOut(context).then((_) async {
+                                    await destroyUserPreference().then((value) {
+                                      if (value) {
+                                        _userStreamController.add(
+                                            null); // Add null to the stream controller to indicate that the user has signed out
+                                      }
+                                    });
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(user.avatar_url),
+                                      radius: 15,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text('Sign Out'),
+                                  ],
+                                ),
+                              );
+                      } else if (snapshot.hasError) {
+                        // Handle errors
+                        return Text("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData) {
+                        // Render a loading spinner while the data is being fetched
+                        return InkWell(
+                            onHover: (value) {
                               setState(() {
-                                _isProcessing = true;
-                              });
-                              await signOut().then((_) async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                await prefs.remove('user_id');
+                                value
+                                    ? _isHovering[3] = true
+                                    : _isHovering[3] = false;
                               });
                             },
-                      child: Text('Sign Out'),
-                    ),
-            ),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => const AuthDialog(),
+                              );
+                            },
+                            child: Text(
+                              'sign in',
+                              style: TextStyle(
+                                color: _isHovering[3]
+                                    ? Colors.white
+                                    : Colors.white70,
+                              ),
+                            ));
+                      } else {
+                        return Container();
+                      }
+                    }))
           ],
         ),
       ),

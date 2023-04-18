@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/utils/authentication.dart';
 
-class GoogleButton extends StatefulWidget {
+class MicrosoftButton extends StatefulWidget {
+  const MicrosoftButton({Key? key}) : super(key: key);
+
   @override
-  _GoogleButtonState createState() => _GoogleButtonState();
+  _MicrosoftButtonState createState() => _MicrosoftButtonState();
 }
 
-class _GoogleButtonState extends State<GoogleButton> {
+class _MicrosoftButtonState extends State<MicrosoftButton> {
   bool _isProcessing = false;
 
   @override
@@ -37,7 +39,7 @@ class _GoogleButtonState extends State<GoogleButton> {
           setState(() {
             _isProcessing = true;
           });
-          await signInWithGoogle().then((result) {
+          await signInWithMicrosoft().then((result) {
             print(result);
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacement(

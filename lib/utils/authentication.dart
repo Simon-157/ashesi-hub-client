@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:hub_client/state_management/user_state.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,9 +32,11 @@ Future<String?> registerWithEmailPassword(String email, String password) async {
   return 'Successfully registered, User UID: ${user.uid}';
 }
 
-Future<String> signOut() async {
+Future<String> signOut(BuildContext context) async {
   await _auth.signOut();
 
+  final userState = Provider.of<UserState>(context, listen: false);
+  userState.clearUser();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('auth', false);
 
@@ -41,7 +45,8 @@ Future<String> signOut() async {
   return 'User signed out';
 }
 
-Future<String?> signInWithEmailPassword(String email, String password) async {
+Future<String?> signInWithEmailPassword(
+    BuildContext context, String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
@@ -65,10 +70,13 @@ Future<String?> signInWithEmailPassword(String email, String password) async {
     final User? currentUser = _auth.currentUser;
     assert(user.uid == currentUser?.uid);
 
+    final userState = Provider.of<UserState>(context, listen: false);
+    userState.setUser(currentUser!.uid, user.email!);
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('email', user.email!);
     prefs.setBool('auth', true);
-    prefs.setString('current_user_id', currentUser!.uid);
+    prefs.setString('current_user_id', currentUser.uid);
 
     return 'Successfully logged in, User UID: ${user.uid}';
   }
@@ -76,86 +84,26 @@ Future<String?> signInWithEmailPassword(String email, String password) async {
   return null;
 }
 
-// GOOGLE SIGN IN SET UP
+// MICROSOFT AUTHENTICATION
+Future<UserCredential> signInWithMicrosoft() async {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-final GoogleSignIn googleSignIn = GoogleSignIn();
+  // Create a new instance of the Microsoft OAuth provider
+  final OAuthProvider microsoftProvider = OAuthProvider('microsoft.com');
 
-late var name;
-late var imageUrl =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtqnnILA7WRYwvZGwpRLZp4-guqSwsDwnYrQ&usqp=CAU";
+  // Set the scopes for the Microsoft OAuth provider
+  microsoftProvider.addScope('User.Read');
 
-Future<String?> signInWithGoogle() async {
-  // Initialize Firebase
-  await Firebase.initializeApp();
+  // Sign in with Microsoft using the OAuth provider
+  final UserCredential authCredential =
+      await firebaseAuth.signInWithPopup(microsoftProvider);
 
-  final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-  final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount!.authentication;
-
-  final AuthCredential credential = GoogleAuthProvider.credential(
-    accessToken: googleSignInAuthentication.accessToken,
-    idToken: googleSignInAuthentication.idToken,
-  );
-
-  final UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
-  final User? user = userCredential.user;
-
-  if (user != null) {
-    // Checking if email and name is null
-    assert(user.uid != null);
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(user.photoURL != null);
-
-    uid = user.uid;
-    name = user.displayName!;
-    imageUrl = user.photoURL!;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    final User? currentUser = _auth.currentUser;
-    assert(user.uid == currentUser?.uid);
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('auth', true);
-    prefs.setString('current_user_id', currentUser!.uid);
-
-    return 'Google sign in successful, User UID: ${user.uid}';
-  }
-
-  return null;
-}
-
-void signOutGoogle() async {
-  await googleSignIn.signOut();
-  await _auth.signOut();
-
+  // Return the user credential
+  uid = authCredential.user!.uid;
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('auth', false);
-
-  uid = null;
-  name = null;
-  imageUrl = "";
-
-  print("User signed out of Google account");
-}
-
-Future getUser() async {
-  // Initialize Firebase
-  await Firebase.initializeApp();
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool authSignedIn = prefs.getBool('auth') ?? false;
-
-  final User? user = _auth.currentUser;
-
-  if (authSignedIn == true) {
-    if (user != null) {
-      uid = user.uid;
-      name = user.displayName;
-      // imageUrl = user.photoURL;
-    }
-  }
+  prefs.setBool('auth', true);
+  prefs.setString('current_user_id', authCredential.user!.uid);
+  print("singed in: ------------${authCredential.user!.uid}");
+  return await firebaseAuth
+      .signInWithCredential(authCredential as AuthCredential);
 }

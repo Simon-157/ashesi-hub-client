@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/components/card_custom.dart';
 import 'package:hub_client/components/custome_image.dart';
 import 'package:hub_client/models/post_model.dart';
+import 'package:hub_client/services/likes_service.dart';
+import 'package:hub_client/ui/views/post/post_view.dart';
 import 'package:hub_client/ui/widgets/post/post_buttons.dart';
+import 'package:hub_client/ui/widgets/post/post_detail.dart';
 import 'package:hub_client/ui/widgets/post/post_interraction_counts.dart';
 import 'package:hub_client/ui/widgets/post/post_owner.dart';
-import 'package:hub_client/ui/widgets/post/post_view.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -30,7 +32,7 @@ class UserPost extends StatelessWidget {
               child: OpenContainer(
                 transitionType: ContainerTransitionType.fadeThrough,
                 openBuilder: (BuildContext context, VoidCallback _) {
-                  return ViewImage(post: post);
+                  return PostView(post: post);
                 },
                 closedElevation: 0.0,
                 closedShape: const RoundedRectangleBorder(
@@ -70,7 +72,7 @@ class UserPost extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       buildLikeButton(post),
-                                      const SizedBox(width: 5.0),
+                                      const SizedBox(width: 25.0),
                                       InkWell(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -102,18 +104,20 @@ class UserPost extends StatelessWidget {
                                         padding:
                                             const EdgeInsets.only(left: 0.0),
                                         child: StreamBuilder(
-                                          stream: likesRef
-                                              .where('postId',
-                                                  isEqualTo: post.postId)
-                                              .snapshots(),
+                                          stream: getLikesStream(post.postId),
                                           builder: (context,
-                                              AsyncSnapshot<QuerySnapshot>
+                                              AsyncSnapshot<
+                                                      QuerySnapshot<
+                                                          Map<String, dynamic>>>
                                                   snapshot) {
                                             if (snapshot.hasData) {
-                                              QuerySnapshot? snap =
-                                                  snapshot.data;
-                                              List<DocumentSnapshot> docs =
-                                                  snap!.docs;
+                                              QuerySnapshot<
+                                                      Map<String, dynamic>>?
+                                                  snap = snapshot.data;
+                                              List<
+                                                      DocumentSnapshot<
+                                                          Map<String, dynamic>>>
+                                                  docs = snap!.docs;
                                               return buildLikesCount(
                                                   context, docs.length);
                                             } else {
@@ -154,11 +158,9 @@ class UserPost extends StatelessWidget {
                                         left: 5.0, top: 3.0),
                                     child: Text(
                                       post.description,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .caption!
-                                            .color,
+                                      style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 204, 224, 228),
                                         fontSize: 15.0,
                                       ),
                                       maxLines: 2,

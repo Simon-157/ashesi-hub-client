@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/app/router.dart';
-import 'package:hub_client/utils/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hub_client/providers/provider.dart';
+import 'package:hub_client/state_management/user_state.dart';
+import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -27,26 +28,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<void> getUserInfo() async {
-    await getUser(); // assuming `getUser()` is defined elsewhere
-    setState(() {});
-    print(uid); // assuming `uid` is defined elsewhere
-  }
-
-  @override
-  void initState() {
-    getUserInfo();
-    super.initState();
-  }
+  final UserState userState = UserState();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: providers,
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Ashesi Hub',
-          routerConfig: router,
-        ));
+      providers: [
+        ChangeNotifierProvider.value(value: userState),
+        ...providers,
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Ashesi Hub',
+        routerConfig: router,
+      ),
+    );
   }
 }

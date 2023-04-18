@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hub_client/models/post_model.dart';
+import 'package:flutter/material.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/services/base_service.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class PostService extends Service {
@@ -22,8 +23,12 @@ class PostService extends Service {
 
   /// The function uploads a post to a Firestore database with information such as the user's email,
   /// image, and description.
-  Future<void> uploadPost(String image, String description) async {
-    DocumentSnapshot userDoc = await usersRef.doc(uid).get();
+  Future<void> uploadPost(
+      BuildContext context, String image, String description) async {
+    final userState = Provider.of<UserState>(context, listen: false);
+    String? currentUserId = userState.uid;
+
+    DocumentSnapshot userDoc = await usersRef.doc(currentUserId).get();
     UserModel user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
 
     DocumentReference newPostRef =
@@ -33,7 +38,7 @@ class PostService extends Service {
 
     await newPostRef.set({
       'username': user.email,
-      'ownerId': uid,
+      'ownerId': currentUserId,
       'mediaUrl': image,
       'description': description,
       'timestamp': FieldValue.serverTimestamp(),
@@ -93,24 +98,3 @@ class PostService extends Service {
   }
 
 }
-
-
-
-//  addLikesToNotification(String type, String username, String userId,
-//       String postId, String mediaUrl, String ownerId, String userDp) async {
-        
-//     await notificationRef
-//         .doc(ownerId)
-//         .collection('notifications')
-//         .doc(postId)
-//         .set({
-//       "type": type,
-//       "username": username,
-//       "userId": firebaseAuth.currentUser!.uid,
-//       "userDp": userDp,
-//       "postId": postId,
-//       "mediaUrl": mediaUrl,
-//       "timestamp": Timestamp.now(),
-//     });
-//   }
-

@@ -72,7 +72,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         icon: const Icon(Icons.send_rounded),
                         onPressed: () {
                           postService
-                              .uploadPost(imageUri, _description)
+                              .uploadPost(context, imageUri, _description)
                               .then((value) {
                             showDialog(
                               context: context,

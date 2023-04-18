@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   late String username;
   late String email;
@@ -36,7 +38,7 @@ class UserModel {
     // DateTime.fromMillisecondsSinceEpoch(json['date_of_birth'] * 1000);
   }
 
-  Map<String, dynamic> toJson() {
+ Map<String, dynamic> toJson(Future<DocumentSnapshot<Object?>> future) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['first_name'] = username;
     data['email_or_phone'] = email;

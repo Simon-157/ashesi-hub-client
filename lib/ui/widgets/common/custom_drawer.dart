@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/notification_model.dart';
 import 'package:hub_client/services/app_notification_service.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/state_management/user_state.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final userState = Provider.of<UserState>(context, listen: false);
+    String? currentUserId = userState.uid;
+
+
     return Align(
       alignment: Alignment.centerRight,
       child: SizedBox(
@@ -57,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 Expanded(
                   child: StreamBuilder<List<NotificationModel>>(
-                    stream: getNotifications(uid),
+                    stream: getNotifications(currentUserId!),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const Center(

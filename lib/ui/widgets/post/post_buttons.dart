@@ -17,23 +17,36 @@ currentUserId() {
 
 buildImage(BuildContext context, PostModel post) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
-      child: CachedNetworkImage(
-        imageUrl: post.mediaUrl,
-        placeholder: (context, url) {
-          return circularProgress(context);
-        },
-        errorWidget: (context, url, error) {
-          return const Icon(Icons.error);
-        },
-        height: 400.0,
-        fit: BoxFit.cover,
-        width: MediaQuery.of(context).size.width,
-      ),
-    ),
-  );
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5.0),
+        child: Column(
+
+          children: [
+            Text(
+              post.description,
+              style: const TextStyle(inherit: false,color: Color.fromARGB(255, 239, 233, 214)),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            post.mediaUrl.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: post.mediaUrl,
+                    placeholder: (context, url) {
+                      return circularProgress(context);
+                    },
+                    errorWidget: (context, url, error) {
+                      return Container();
+                    },
+                    height: 400.0,
+                    fit: BoxFit.fitHeight,
+                    width: MediaQuery.of(context).size.longestSide,
+                  )
+                : Container(),
+          ],
+        ),
+      ));
 }
 
 buildLikeButton(PostModel post) {
@@ -84,11 +97,7 @@ buildLikeButton(PostModel post) {
           likeBuilder: (bool isLiked) {
             return Icon(
               isLiked ? Icons.favorite : Icons.favorite_border,
-              color: isLiked
-                  ? Colors.red
-                  : (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black),
+              color: isLiked ? Colors.red : Color.fromARGB(255, 219, 239, 239),
               size: 25,
             );
           },
@@ -99,4 +108,20 @@ buildLikeButton(PostModel post) {
   );
 }
 
-
+buildCommentButton(PostModel post) {
+  return StreamBuilder(
+    stream: commentRef.where('postId', isEqualTo: post.postId).snapshots(),
+    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      if (snapshot.hasData) {
+        int commentsCount = snapshot.data?.docs.length ?? 0;
+        return TextButton(
+          onPressed: () {
+            // TODO: Navigate to the post's comments screen
+          },
+          child: const Icon(Icons.comment),
+        );
+      }
+      return Container();
+    },
+  );
+}

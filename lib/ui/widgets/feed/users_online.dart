@@ -26,7 +26,7 @@ class _UsersOnlineState extends State<UsersOnline> {
   Widget build(BuildContext context) {
     return SizedBox(
         width: 300, // Set width constraint
-        height: 500,
+        height: 200,
         child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -63,23 +63,7 @@ class _UsersOnlineState extends State<UsersOnline> {
                   child: buildOptionItem("Simon Owusu", "online"),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  "Direct Messages",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 94, 237, 189)),
-                ),
-                const SizedBox(height: 10),
-                Flexible(
-                  child: buildOptionItem("Simon Owusu", "5mins ago"),
-                ),
-                Flexible(
-                  child: buildOptionItem("Simon Owusu", "10mins ago"),
-                ),
-                Flexible(
-                  child: buildOptionItem("Simon Owusu", "1day ago"),
-                ),
+                
               ],
             )));
   }

@@ -53,7 +53,7 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
   Widget build(BuildContext context) {
     return SizedBox(
         width: 300, // Set width constraint
-        height: 500,
+        height: 300,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.min,
@@ -66,39 +66,44 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
                     fontWeight: FontWeight.w200),
               ),
               SizedBox(
-                height: 450,
+                height: 250,
                 child: ListView.builder(
                   itemCount: _suggestedUsers.length,
                   itemBuilder: (context, index) {
                     UserModel user = _suggestedUsers[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(user.avatar_url),
-                      ),
-                      title: Text(
-                        user.username,
-                        style: const TextStyle(
-                            color: Color.fromARGB(171, 192, 248, 238),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w200),
-                      ),
-                      subtitle: Text(
-                        user.major,
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 89, 155, 144),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w200),
-                      ),
-                      trailing: profileActionButton(
-                        user: user,
-                        isFollowing: _isFollowing,
-                        id: user.user_id,
-                        context: context,
-                        follow: _followUser,
-                        unFollow: _unfollowUser,
-                      ),
-                    );
+                    bool isMe = user.user_id == firebaseAuth.currentUser!.uid;
+                    if (isMe) {
+                      return const SizedBox();
+                    } else {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(user.avatar_url),
+                        ),
+                        title: Text(
+                          user.username,
+                          style: const TextStyle(
+                              color: Color.fromARGB(232, 230, 245, 243),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w200),
+                        ),
+                        subtitle: Text(
+                          user.major,
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 89, 155, 144),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w200),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: profileActionButton(
+                          user: user,
+                          isFollowing: _isFollowing,
+                          context: context,
+                          follow: _followUser,
+                          unFollow: _unfollowUser,
+                        ),
+                      );
+                    }
                   },
                 ),
               )
@@ -108,18 +113,11 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
   Widget profileActionButton({
     required UserModel user,
     required bool isFollowing,
-    required String id,
     required BuildContext context,
     Function()? follow,
     Function()? unFollow,
   }) {
-    bool isMe = id == firebaseAuth.currentUser!.uid;
-    if (isMe) {
-      return ElevatedButton(
-        onPressed: () {},
-        child: const Text("Edit Profile"),
-      );
-    } else if (isFollowing) {
+    if (isFollowing) {
       return ElevatedButton(
         onPressed: unFollow,
         child: const Text("Unfollow"),

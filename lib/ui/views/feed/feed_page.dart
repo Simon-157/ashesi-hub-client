@@ -170,7 +170,10 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                       ),
                     ),
                   ),
-                  Column(children: const [SuggestedUsersScreen()])
+                  Column(children: [
+                    const SuggestedUsersScreen(),
+                    UsersOnline(options: filterOptions)
+                  ])
                 ],
               ),
             ),

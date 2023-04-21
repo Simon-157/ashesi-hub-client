@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/comments_model.dart';
-import 'package:hub_client/services/comments_service.dart';
+import 'package:hub_client/services/firestore_services/comments_service.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

@@ -2,7 +2,7 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/post_model.dart';
-import 'package:hub_client/services/profile_services.dart';
+import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/ui/views/post/post_view.dart';
 
 class ProfilePostsGrid extends StatefulWidget {
@@ -32,7 +32,7 @@ class _ProfilePostsGridState extends State<ProfilePostsGrid> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: getUserPostsSnapshot(widget.profileId!),
+      stream: ProfileService.getUserPostsSnapshot(widget.profileId!),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final List<DocumentSnapshot> posts = snapshot.data!.docs;

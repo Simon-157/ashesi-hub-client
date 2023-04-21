@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hub_client/services/posts_service.dart';
+import 'package:hub_client/services/firestore_services/posts_service.dart';
 import 'package:hub_client/ui/widgets/common/image_upload.dart';
 
 class CreatePostDialog extends StatefulWidget {

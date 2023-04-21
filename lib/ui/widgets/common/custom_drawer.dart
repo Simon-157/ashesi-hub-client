@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/notification_model.dart';
-import 'package:hub_client/services/app_notification_service.dart';
+import 'package:hub_client/services/firestore_services/app_notification_service.dart';
 import 'package:hub_client/state_management/user_state.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;

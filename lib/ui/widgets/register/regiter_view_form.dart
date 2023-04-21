@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/components/custom_text_field.dart';
 import 'package:hub_client/models/students.dart';
-import 'package:hub_client/services/register_api_service.dart';
+import 'package:hub_client/services/api_services/register_api_service.dart';
 import 'package:hub_client/utils/authentication.dart';
 
 class RegisterForm extends StatelessWidget {

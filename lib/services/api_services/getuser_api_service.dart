@@ -2,7 +2,7 @@ import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
-import '../enums/constants.dart';
+import '../../enums/constants.dart';
 
 class ApiService {
   static Future<Map> getStudent(String id) async {

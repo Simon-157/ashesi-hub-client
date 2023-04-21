@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hub_client/services/update_profile.dart';
+import 'package:hub_client/services/api_services/update_profile.dart';
 import 'package:hub_client/utils/authentication.dart';
 
 class EditProfileViewModel extends ChangeNotifier {

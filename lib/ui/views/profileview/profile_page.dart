@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/components/custome_button.dart';
 import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/services/follow_user_service.dart';
-import 'package:hub_client/services/profile_services.dart';
+import 'package:hub_client/services/firestore_services/follow_user_service.dart';
+import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/ui/views/profileview/profile_buttons.dart';
 import 'package:hub_client/ui/views/profileview/profile_details.dart';
 import 'package:hub_client/ui/widgets/profile/profile_post_grid.dart';
@@ -33,7 +33,7 @@ class _ProfileState extends State<Profile> {
   ScrollController controller = ScrollController();
 
   unFollow() async {
-    Stream<DocumentSnapshot> userStream = getUserSnapshot(currentUserId());
+    Stream<DocumentSnapshot> userStream = ProfileService.getUserSnapshot(ProfileService.currentUserId());
     userStream.listen((DocumentSnapshot doc) {
       student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     });
@@ -42,11 +42,11 @@ class _ProfileState extends State<Profile> {
       isFollowing = false;
     });
 
-    await handleUnfollowDeletion(widget.profileId);
+    await FollowService.handleUnfollowDeletion(widget.profileId);
   }
 
   Follow() async {
-    Stream<DocumentSnapshot> userStream = getUserSnapshot(currentUserId());
+    Stream<DocumentSnapshot> userStream = ProfileService.getUserSnapshot(ProfileService.currentUserId());
     userStream.listen((DocumentSnapshot doc) {
       student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     });
@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> {
       isFollowing = true;
     });
 
-    await handleFollowUpdate(widget.profileId, student);
+    await FollowService.handleFollowUpdate(widget.profileId, student);
   }
 
   @override
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
   }
 
   void checkUserFollowing() async {
-    bool result = await isUserFollowing(widget.profileId!);
+    bool result = await ProfileService.isUserFollowing(widget.profileId!);
     setState(() {
       isFollowing = result;
     });
@@ -145,7 +145,7 @@ class _ProfileState extends State<Profile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     StreamBuilder(
-                                      stream: getUserPostsSnapshot(
+                                      stream: ProfileService.getUserPostsSnapshot(
                                           widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
@@ -170,7 +170,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: getUserFollowersSnapshot(
+                                      stream: ProfileService.getUserFollowersSnapshot(
                                           widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
@@ -195,7 +195,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: getUserFollowingSnapshot(
+                                      stream: ProfileService.getUserFollowingSnapshot(
                                           widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>

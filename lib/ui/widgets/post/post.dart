@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/components/card_custom.dart';
 import 'package:hub_client/components/custome_image.dart';
 import 'package:hub_client/models/post_model.dart';
-import 'package:hub_client/services/likes_service.dart';
+import 'package:hub_client/services/firestore_services/likes_service.dart';
 import 'package:hub_client/ui/views/post/post_view.dart';
 import 'package:hub_client/ui/widgets/post/post_buttons.dart';
-import 'package:hub_client/ui/widgets/post/post_detail.dart';
 import 'package:hub_client/ui/widgets/post/post_interraction_counts.dart';
 import 'package:hub_client/ui/widgets/post/post_owner.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
@@ -104,7 +103,7 @@ class UserPost extends StatelessWidget {
                                         padding:
                                             const EdgeInsets.only(left: 0.0),
                                         child: StreamBuilder(
-                                          stream: getLikesStream(post.postId),
+                                          stream: LikesService.getLikesStream(post.postId),
                                           builder: (context,
                                               AsyncSnapshot<
                                                       QuerySnapshot<

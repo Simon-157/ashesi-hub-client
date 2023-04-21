@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hub_client/services/base_service.dart';
 
-import '../enums/constants.dart';
+import '../../enums/constants.dart';
 
 /// The `UpdateProfileService` class provides a static method to update a student profile using HTTP PUT request
 /// with JSON data.

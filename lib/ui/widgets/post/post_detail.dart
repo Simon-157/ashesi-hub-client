@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/post_model.dart';
-import 'package:hub_client/services/comments_service.dart';
-import 'package:hub_client/services/likes_service.dart';
+import 'package:hub_client/services/firestore_services/comments_service.dart';
+import 'package:hub_client/services/firestore_services/likes_service.dart';
 import 'package:hub_client/ui/widgets/comments/post_comments.dart';
 import 'package:hub_client/ui/widgets/post/post_buttons.dart';
 import 'package:hub_client/ui/widgets/post/post_interraction_counts.dart';
@@ -63,7 +63,7 @@ class _PostDetailedState extends State<PostDetailed> {
                           buildLikeButton(widget.post),
                           const SizedBox(width: 2),
                           StreamBuilder(
-                            stream: getLikesStream(widget.post.postId),
+                            stream: LikesService.getLikesStream(widget.post.postId),
                             builder: (context,
                                 AsyncSnapshot<
                                         QuerySnapshot<Map<String, dynamic>>>

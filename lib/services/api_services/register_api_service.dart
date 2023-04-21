@@ -2,7 +2,7 @@ import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
-import '../enums/constants.dart';
+import '../../enums/constants.dart';
 
 /// The class is an API service that submits form data to a specified URL and returns the
 /// response.

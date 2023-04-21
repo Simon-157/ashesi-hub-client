@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/components/custom_widget_attributes.dart';
 import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/services/update_profile.dart';
+import 'package:hub_client/services/api_services/update_profile.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 

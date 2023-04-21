@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hub_client/services/getuser_api_service.dart';
+import 'package:hub_client/services/api_services/getuser_api_service.dart';
 import 'package:hub_client/ui/widgets/profile/change_profile_image_dialog.dart';
 
 class MyStudentWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hub_client/services/posts_service.dart';
-import 'package:hub_client/services/user.dart';
+import 'package:hub_client/services/firestore_services/posts_service.dart';
+import 'package:hub_client/services/api_services/user.dart';
 
 class PostsViewModel extends ChangeNotifier {
   //Services

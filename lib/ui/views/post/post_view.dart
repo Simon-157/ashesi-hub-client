@@ -7,6 +7,7 @@ import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/ui/widgets/post/post_detail.dart';
+import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -184,7 +185,8 @@ class _PostViewState extends State<PostView>
                 ),
               ),
               child: Row(
-                  children: [FilterOptions(options: filterOptions), Expanded(child: PostDetailed(post: widget.post)), UsersOnline(options: filterOptions)]),
+                // FilterOptions(options: filterOptions)
+                  children: [const SuggestedUsersScreen(), Expanded(child: PostDetailed(post: widget.post)), UsersOnline(options: filterOptions)]),
             ),
             drawer: const CustomDrawer()));
   }

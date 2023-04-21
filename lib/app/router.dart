@@ -8,6 +8,7 @@ import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/ui/views/profileview/profile_page.dart';
 import 'package:hub_client/providers/post_view.dart';
+import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,12 @@ final GoRouter router = GoRouter(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginPage();
+          },
+        ),
+        GoRoute(
+          path: 'try',
+          builder: (BuildContext context, GoRouterState state) {
+            return SuggestedUsersScreen();
           },
         ),
         GoRoute(

@@ -39,6 +39,19 @@ class UserModel {
     // DateTime.fromMillisecondsSinceEpoch(json['date_of_birth'] * 1000);
   }
 
+  UserModel.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    username = data['first_name'];
+    email = data['email_or_phone'];
+    user_id = data['user_id'];
+    major = data['major'];
+    year_group = data['year_group'];
+    best_food = data['best_food'];
+    best_movie = data['best_movie'];
+    residence = data['residence'];
+    avatar_url = data['avatar_url'];
+  }
+
   Map<String, dynamic> toJson(Future<DocumentSnapshot<Object?>> future) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['first_name'] = username;

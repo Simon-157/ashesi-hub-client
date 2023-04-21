@@ -9,6 +9,7 @@ import 'package:hub_client/ui/widgets/feed/feed_nav.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/post/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
+import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/loaders.dart';
 import 'package:provider/provider.dart';
@@ -49,14 +50,13 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         setState(() async {
-      
           page = page + 20;
           loadingMore = true;
           prefs = await SharedPreferences.getInstance();
         });
       }
     });
-  
+
     super.initState();
   }
 
@@ -109,11 +109,11 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
               // firebaseAuth.currentUser != null,
               currentUserId != null
                   ? FeedBar(
-                    
                       currentUserId: currentUserId,
-                      openNotificationSidebar: openNotificationSidebar, getTotalNotifications: getTotalUserNotifications)
+                      openNotificationSidebar: openNotificationSidebar,
+                      getTotalNotifications: getTotalUserNotifications)
                   : FeedBar(
-                    getTotalNotifications: getTotalUserNotifications,
+                      getTotalNotifications: getTotalUserNotifications,
                       currentUserId: currentUserId,
                       openNotificationSidebar: openNotificationSidebar)
             ],
@@ -170,7 +170,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
                       ),
                     ),
                   ),
-                  Column(children: [UsersOnline(options: filterOptions)])
+                  Column(children: const [SuggestedUsersScreen()])
                 ],
               ),
             ),

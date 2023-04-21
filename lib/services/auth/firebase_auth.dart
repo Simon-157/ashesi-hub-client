@@ -101,6 +101,8 @@ Future<UserCredential> signInWithMicrosoft(BuildContext context) async {
   // Return the user credential
   uid = authCredential.user!.uid;
 
+
+  String? url = authCredential.user?.photoURL;
   final userState = Provider.of<UserState>(context, listen: false);
   userState.setUser(authCredential.user!.uid, authCredential.user!.email);
 

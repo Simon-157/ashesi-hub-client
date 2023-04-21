@@ -2,6 +2,10 @@ The users post will come with the email, uuid and password used to sign up
 THe uuid will then be used to generate the user profile
 
 
----- Complete in app notifications for comments, likes
----- Complete microsoft authentication
----- Complete comment functionality
+---- Complete in app notifications for comments, likes =====DONE
+---- Complete microsoft authentication ===== DONE
+---- Complete comment functionality ===== DONE
+
+---- Complete registration mirroring 
+---- Modify email notification for posts content
+---- Complete emoji in post functionality

@@ -122,3 +122,110 @@
 //                       ),
 //                     ),
 //               const SizedBox(width: 20.0),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // onHover: (value) {
+                //   setState(() {
+                //     value ? _isHovering[3] = true : _isHovering[3] = false;
+                //   });
+                // },
+                // child: StreamBuilder<UserModel?>(
+                //     stream: _userStreamController
+                //         .stream, // Listen to the stream controller
+                //     builder: (context, snapshot) {
+                //       print(snapshot.hasData);
+                //       if (snapshot.hasData) {
+                //         UserModel? user = snapshot.data;
+                //         // Render the UI with the user's data
+                //         onTap:
+                //         user == null
+                //             ? () {
+                //                 showDialog(
+                //                   context: context,
+                //                   builder: (context) => const AuthDialog(),
+                //                 );
+                //               }
+                //             : null;
+                //         return user == null
+                //             ? Text(
+                //                 'sign in',
+                //                 style: TextStyle(
+                //                   color: _isHovering[3]
+                //                       ? Colors.white
+                //                       : Colors.white70,
+                //                 ),
+                //               )
+                //             : InkWell(
+                //                 onTap: () async {
+                //                   setState(() {
+                //                     _isProcessing = true;
+                //                   });
+                //                   await signOut(context).then((_) async {
+                //                     await destroyUserPreference().then((value) {
+                //                       if (value) {
+                //                         _userStreamController.add(
+                //                             null); // Add null to the stream controller to indicate that the user has signed out
+                //                       }
+                //                     });
+                //                   });
+                //                 },
+                //                 child: Row(
+                //                   children: [
+                //                     CircleAvatar(
+                //                       backgroundImage:
+                //                           NetworkImage(user.avatar_url),
+                //                       radius: 15,
+                //                     ),
+                //                     const SizedBox(width: 10),
+                //                     const Text('Sign Out'),
+                //                   ],
+                //                 ),
+                //               );
+                //       } else if (snapshot.hasError) {
+                //         // Handle errors
+                //         return Text("Error: ${snapshot.error}");
+                //       } else if (!snapshot.hasData) {
+                //         // Render a loading spinner while the data is being fetched
+                //         return InkWell(
+                //             onHover: (value) {
+                //               setState(() {
+                //                 value
+                //                     ? _isHovering[3] = true
+                //                     : _isHovering[3] = false;
+                //               });
+                //             },
+                //             onTap: () {
+                //               showDialog(
+                //                 context: context,
+                //                 builder: (context) => const AuthDialog(),
+                //               );
+                //             },
+                //             child: Text(
+                //               'sign in',
+                //               style: TextStyle(x
+                //                 color: _isHovering[3]
+                //                     ? Colors.white
+                //                     : Colors.white70,
+                //               ),
+                //             ));
+                //       } else {
+                //         return Container();
+                //       }
+                //     }))

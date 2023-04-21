@@ -11,7 +11,7 @@ class FeedBar extends StatelessWidget {
   final Function openNotificationSidebar;
   final Future<int> Function() getTotalNotifications;
 
-  FeedBar({
+  const FeedBar({
     Key? key,
     required this.currentUserId,
     required this.openNotificationSidebar,

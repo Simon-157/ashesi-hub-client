@@ -1,12 +1,10 @@
-import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/state_management/user_state.dart';
-import 'package:hub_client/state_preference/user_store.dart';
+import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/services/auth/firebase_auth.dart';
+import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
-import 'package:provider/provider.dart';
 
 class TopBarContents extends StatefulWidget {
   const TopBarContents({Key? key}) : super(key: key);
@@ -19,29 +17,12 @@ class _TopBarContentsState extends State<TopBarContents> {
   final List _isHovering = [
     false,
     false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
   ];
-  // UserModel? user;
-  bool _isProcessing = false;
-  final StreamController<UserModel?> _userStreamController =
-      StreamController<UserModel?>();
-
-  Stream<UserModel?> returnUser() {
-    Stream<UserModel?> user = getAuthUser(context, _userStreamController);
-    print('user signed in  = ${user.isEmpty}');
-    return user;
-  }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    final userState = Provider.of<UserState>(context, listen: false);
-    print("provider state ----------- ${userState.uid}");
+
     return PreferredSize(
       preferredSize: Size(screenSize.width, 1000),
       child: Padding(
@@ -108,95 +89,80 @@ class _TopBarContentsState extends State<TopBarContents> {
             SizedBox(
               width: screenSize.width / 50,
             ),
-            InkWell(
-                onHover: (value) {
-                  setState(() {
-                    value ? _isHovering[3] = true : _isHovering[3] = false;
-                  });
-                },
-                child: StreamBuilder<UserModel?>(
-                    stream: _userStreamController
-                        .stream, // Listen to the stream controller
-                    builder: (context, snapshot) {
-                      print(snapshot.hasData);
-                      if (snapshot.hasData) {
-                        UserModel? user = snapshot.data;
-                        // Render the UI with the user's data
-                        onTap:
-                        user == null
-                            ? () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => const AuthDialog(),
+            // TODO DYNAMICALLY SHOW LOGIN AND USER AVATAR
+            firebaseAuth.currentUser != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20.0),
+                      const SizedBox(width: 20.0),
+                      Tooltip(
+                        message: "View Profile",
+                        preferBelow: false,
+                        child: InkWell(
+                          onTap: () {
+                            context.go(
+                                '/profile/${firebaseAuth.currentUser?.uid}');
+                          },
+                          child: StreamBuilder<DocumentSnapshot>(
+                            stream: ProfileService.getUserSnapshot(
+                                firebaseAuth.currentUser!.uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return const Icon(Icons.error);
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else {
+                                final userDoc = snapshot.data!;
+                                final avatarUrl =
+                                    userDoc.get('avatar_url') as String?;
+
+                                return CircleAvatar(
+                                  radius: 15.0,
+                                  backgroundImage: NetworkImage(avatarUrl!),
                                 );
                               }
-                            : null;
-                        return user == null
-                            ? Text(
-                                'sign in',
-                                style: TextStyle(
-                                  color: _isHovering[3]
-                                      ? Colors.white
-                                      : Colors.white70,
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () async {
-                                  setState(() {
-                                    _isProcessing = true;
-                                  });
-                                  await signOut(context).then((_) async {
-                                    await destroyUserPreference().then((value) {
-                                      if (value) {
-                                        _userStreamController.add(
-                                            null); // Add null to the stream controller to indicate that the user has signed out
-                                      }
-                                    });
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(user.avatar_url),
-                                      radius: 15,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Text('Sign Out'),
-                                  ],
-                                ),
-                              );
-                      } else if (snapshot.hasError) {
-                        // Handle errors
-                        return Text("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData) {
-                        // Render a loading spinner while the data is being fetched
-                        return InkWell(
-                            onHover: (value) {
-                              setState(() {
-                                value
-                                    ? _isHovering[3] = true
-                                    : _isHovering[3] = false;
-                              });
                             },
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => const AuthDialog(),
-                              );
-                            },
-                            child: Text(
-                              'sign in',
-                              style: TextStyle(
-                                color: _isHovering[3]
-                                    ? Colors.white
-                                    : Colors.white70,
-                              ),
-                            ));
-                      } else {
-                        return Container();
-                      }
-                    }))
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 30.0),
+                      IconButton(
+                        tooltip: "logout",
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        padding: const EdgeInsets.only(right: 5.0),
+                        onPressed: () {
+                          signOut(context);
+                          context.go('/');
+                        },
+                        icon: const Icon(
+                          Icons.logout,
+                          size: 30.0,
+                          color: Color.fromARGB(255, 213, 243, 239),
+                        ),
+                      ),
+                    ],
+                  )
+                : IconButton(
+                    tooltip: "login",
+                    mouseCursor: MaterialStateMouseCursor.clickable,
+                    padding: const EdgeInsets.only(right: 5.0),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const AuthDialog(),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.login,
+                      semanticLabel: "Login",
+                      size: 30.0,
+                      color: Color.fromARGB(255, 213, 243, 239),
+                    ),
+                  )
           ],
         ),
       ),

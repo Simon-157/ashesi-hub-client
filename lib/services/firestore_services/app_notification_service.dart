@@ -4,7 +4,15 @@ import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
-
+Future<int> getTotalUserNotifications() async {
+  if (firebaseAuth.currentUser == null) return 0;
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('notifications')
+      .doc(firebaseAuth.currentUser?.uid)
+      .collection('notifications')
+      .get();
+  return querySnapshot.docs.length;
+}
 
 Stream<List<NotificationModel>> getNotifications(String userId) {
   return FirebaseFirestore.instance

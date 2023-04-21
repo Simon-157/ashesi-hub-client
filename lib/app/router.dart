@@ -43,7 +43,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'feeds',
           builder: (BuildContext context, GoRouterState state) {
-            return const Feeds();
+            return Feeds();
           },
         ),
         GoRoute(
@@ -69,7 +69,6 @@ final GoRouter router = GoRouter(
             }
           },
         ),
-       
       ],
     ),
   ],

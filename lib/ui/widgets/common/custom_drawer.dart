@@ -52,7 +52,7 @@ class CustomDrawer extends StatelessWidget {
                         ),
                         SizedBox(height: 10.0),
                         Text(
-                          'Your Name',
+                          'For my Activities',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,

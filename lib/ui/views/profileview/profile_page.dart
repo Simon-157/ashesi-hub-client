@@ -33,7 +33,8 @@ class _ProfileState extends State<Profile> {
   ScrollController controller = ScrollController();
 
   unFollow() async {
-    Stream<DocumentSnapshot> userStream = ProfileService.getUserSnapshot(ProfileService.currentUserId());
+    Stream<DocumentSnapshot> userStream =
+        ProfileService.getUserSnapshot(ProfileService.currentUserId());
     userStream.listen((DocumentSnapshot doc) {
       student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     });
@@ -46,7 +47,8 @@ class _ProfileState extends State<Profile> {
   }
 
   Follow() async {
-    Stream<DocumentSnapshot> userStream = ProfileService.getUserSnapshot(ProfileService.currentUserId());
+    Stream<DocumentSnapshot> userStream =
+        ProfileService.getUserSnapshot(ProfileService.currentUserId());
     userStream.listen((DocumentSnapshot doc) {
       student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     });
@@ -84,32 +86,49 @@ class _ProfileState extends State<Profile> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             centerTitle: true,
             title: const Text('ashHub'),
             backgroundColor: const Color(0xFF092A45),
             actions: [
-              widget.profileId == firebaseAuth.currentUser?.uid
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: InkWell(
-                          mouseCursor: MaterialStateMouseCursor.clickable,
-                          // child: GestureDetector(
-                          onTap: () {
-                            signOut(context);
-                            context.go('/');
-                          },
-                          child: const Text(
-                            'Log Out',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 15.0,
-                            ),
-                          ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        tooltip: "feeds",
+                        mouseCursor: MaterialStateMouseCursor.clickable,
+                        padding: const EdgeInsets.only(right: 5.0),
+                        onPressed: () {
+                          context.go('/feeds');
+                        },
+                        icon: const Icon(
+                          Icons.podcasts,
+                          color: Color.fromARGB(218, 203, 229, 230),
                         ),
                       ),
-                    )
-                  : const SizedBox()
+                      widget.profileId == firebaseAuth.currentUser?.uid
+                          ? IconButton(
+                              tooltip: "logout",
+                              mouseCursor: MaterialStateMouseCursor.clickable,
+                              padding: const EdgeInsets.only(right: 5.0),
+                              onPressed: () {
+                                signOut(context);
+                                context.go('/');
+                              },
+                              icon: const Icon(
+                                Icons.logout,
+                                color: Color.fromARGB(218, 203, 229, 230),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
           body: CustomScrollView(
@@ -145,8 +164,9 @@ class _ProfileState extends State<Profile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     StreamBuilder(
-                                      stream: ProfileService.getUserPostsSnapshot(
-                                          widget.profileId!),
+                                      stream:
+                                          ProfileService.getUserPostsSnapshot(
+                                              widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
@@ -170,8 +190,9 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: ProfileService.getUserFollowersSnapshot(
-                                          widget.profileId!),
+                                      stream: ProfileService
+                                          .getUserFollowersSnapshot(
+                                              widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
@@ -195,8 +216,9 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: ProfileService.getUserFollowingSnapshot(
-                                          widget.profileId!),
+                                      stream: ProfileService
+                                          .getUserFollowingSnapshot(
+                                              widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {

@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
+import 'package:hub_client/services/firestore_services/app_notification_service.dart';
 import 'package:hub_client/state_management/user_state.dart';
-import 'package:hub_client/ui/views/feed/create_post_dialog.dart';
 import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
+import 'package:hub_client/ui/widgets/feed/feed_nav.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/post/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
@@ -14,8 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Feeds extends StatefulWidget {
-  const Feeds({Key? key}) : super(key: key);
-
+  Feeds({Key? key}) : super(key: key);
   @override
   _FeedsState createState() => _FeedsState();
 }
@@ -49,19 +49,19 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         setState(() async {
+      
           page = page + 20;
           loadingMore = true;
           prefs = await SharedPreferences.getInstance();
         });
       }
     });
+  
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int notificationCount = 2; // Replace with actual count
-
     final userState = Provider.of<UserState>(context, listen: false);
     String? currentUserId = userState.uid;
 
@@ -76,6 +76,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
           colors: [Color(0xFF05182D), Color(0xFF092A45), Color(0xFF0D2339)],
         ),
       ),
+      // ignore: sort_child_properties_last
       child: Scaffold(
           key: scaffoldKey,
           backgroundColor: Colors.transparent,
@@ -85,6 +86,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
             title: Row(
               children: [
                 IconButton(
+                  tooltip: "home",
                   onPressed: () {
                     context.go('/');
                   },
@@ -104,72 +106,16 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
             ),
             centerTitle: true,
             actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.chat_bubble_outline_outlined,
-                  size: 30.0,
-                ),
-                onPressed: () {
-                  context.go('/chats/chat_id');
-                },
-              ),
-              const SizedBox(width: 20.0),
-              IconButton(
-                icon: const Icon(
-                  Icons.post_add_outlined,
-                  size: 30.0,
-                ),
-                onPressed: () {
-                  // context.go('/feeds/create_post');
-
-                  showDialog(
-                    context: context,
-                    builder: (_) => const CreatePostDialog(),
-                  );
-                },
-              ),
-              const SizedBox(width: 20.0),
-              Stack(
-                children: [
-                  IconButton(
-                      icon: const Icon(
-                        Icons.notifications_active_rounded,
-                        size: 30.0,
-                      ),
-                      onPressed: () => {openNotificationSidebar()}),
-                  if (notificationCount > 0)
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.0),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          notificationCount.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(width: 20.0),
-              IconButton(
-                icon: const Icon(
-                  Icons.person_rounded,
-                  size: 30.0,
-                ),
-                onPressed: () {
-                  context.go('/profile/$currentUserId');
-                },
-              ),
-              const SizedBox(width: 20.0),
+              // firebaseAuth.currentUser != null,
+              currentUserId != null
+                  ? FeedBar(
+                    
+                      currentUserId: currentUserId,
+                      openNotificationSidebar: openNotificationSidebar, getTotalNotifications: getTotalUserNotifications)
+                  : FeedBar(
+                    getTotalNotifications: getTotalUserNotifications,
+                      currentUserId: currentUserId,
+                      openNotificationSidebar: openNotificationSidebar)
             ],
           ),
           body: RefreshIndicator(
@@ -229,7 +175,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
               ),
             ),
           ),
-          drawer: CustomDrawer()),
+          drawer: const CustomDrawer()),
     );
   }
 

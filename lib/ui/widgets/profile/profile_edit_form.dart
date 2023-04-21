@@ -80,7 +80,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.group,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -103,7 +103,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.food_bank,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -126,7 +126,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.movie,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -149,7 +149,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.cast_for_education,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -171,7 +171,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.location_city,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -208,7 +208,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                         color: Color.fromARGB(188, 159, 234, 245),
                         fontSize: 16),
                     prefixIcon: Icon(
-                      Icons.perm_identity,
+                      Icons.calendar_month,
                       size: 15.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),

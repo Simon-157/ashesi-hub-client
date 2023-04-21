@@ -1,22 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
-import 'package:hub_client/services/firestore_services/app_notification_service.dart';
-import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
-import 'package:hub_client/ui/widgets/feed/feed_nav.dart';
+import 'package:hub_client/ui/widgets/feed/feed_app_bar.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/post/post.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/loaders.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Feeds extends StatefulWidget {
-  Feeds({Key? key}) : super(key: key);
+  const Feeds({Key? key}) : super(key: key);
   @override
   _FeedsState createState() => _FeedsState();
 }
@@ -62,11 +58,6 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    final userState = Provider.of<UserState>(context, listen: false);
-    String? currentUserId = userState.uid;
-
-    print("feed uid $currentUserId ");
-
     super.build(context);
     return Container(
       decoration: const BoxDecoration(
@@ -81,43 +72,11 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
           key: scaffoldKey,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: const Color(0xFF092A45),
-            title: Row(
-              children: [
-                IconButton(
-                  tooltip: "home",
-                  onPressed: () {
-                    context.go('/');
-                  },
-                  icon: Image.asset(
-                    'images/logo_ashesi.png',
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-                const Text(
-                  "ashHUb",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                  ),
-                )
-              ],
-            ),
-            centerTitle: true,
-            actions: [
-              // firebaseAuth.currentUser != null,
-              currentUserId != null
-                  ? FeedBar(
-                      currentUserId: currentUserId,
-                      openNotificationSidebar: openNotificationSidebar,
-                      getTotalNotifications: getTotalUserNotifications)
-                  : FeedBar(
-                      getTotalNotifications: getTotalUserNotifications,
-                      currentUserId: currentUserId,
-                      openNotificationSidebar: openNotificationSidebar)
-            ],
-          ),
+              leading: null,
+              automaticallyImplyLeading: false,
+              flexibleSpace: FeedAppBar(
+                openNotificationSidebar: openNotificationSidebar,
+              )),
           body: RefreshIndicator(
             // color: Theme.of(context).colorScheme.secondary,
             onRefresh: () => postRef

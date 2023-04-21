@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/state_management/user_state.dart';
-import 'package:hub_client/ui/views/feed/create_post_dialog.dart';
 import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
-import 'package:hub_client/ui/widgets/feed/filter_options.dart';
+import 'package:hub_client/ui/widgets/feed/feed_app_bar.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/ui/widgets/post/post_detail.dart';
 import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
@@ -80,98 +78,11 @@ class _PostViewState extends State<PostView>
             key: scaffoldKey,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: const Color(0xFF092A45),
-              title: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.go('/');
-                    },
-                    icon: Image.asset(
-                      'images/logo_ashesi.png',
-                      width: 50,
-                      height: 50,
-                    ),
-                  ),
-                  const Text(
-                    "ashHUb",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  )
-                ],
-              ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.chat_bubble_outline_outlined,
-                    size: 30.0,
-                  ),
-                  onPressed: () {
-                    context.go('/chats/chat_id');
-                  },
-                ),
-                const SizedBox(width: 20.0),
-                IconButton(
-                  icon: const Icon(
-                    Icons.post_add_outlined,
-                    size: 30.0,
-                  ),
-                  onPressed: () {
-                    // context.go('/feeds/create_post');
-
-                    showDialog(
-                      context: context,
-                      builder: (_) => const CreatePostDialog(),
-                    );
-                  },
-                ),
-                const SizedBox(width: 20.0),
-                Stack(
-                  children: [
-                    IconButton(
-                        icon: const Icon(
-                          Icons.notifications_active_rounded,
-                          size: 30.0,
-                        ),
-                        onPressed: () => {openNotificationSidebar()}),
-                    if (notificationCount > 0)
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(4.0),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            notificationCount.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: 20.0),
-                IconButton(
-                  icon: const Icon(
-                    Icons.person_rounded,
-                    size: 30.0,
-                  ),
-                  onPressed: () {
-                    context.go('/profile/$currentUserId');
-                  },
-                ),
-                const SizedBox(width: 20.0),
-              ],
-            ),
+              leading: null,
+              automaticallyImplyLeading:false,
+                flexibleSpace: FeedAppBar(
+              openNotificationSidebar: openNotificationSidebar,
+            )),
             body: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -185,8 +96,12 @@ class _PostViewState extends State<PostView>
                 ),
               ),
               child: Row(
-                // FilterOptions(options: filterOptions)
-                  children: [const SuggestedUsersScreen(), Expanded(child: PostDetailed(post: widget.post)), UsersOnline(options: filterOptions)]),
+                  // FilterOptions(options: filterOptions)
+                  children: [
+                    const SuggestedUsersScreen(),
+                    Expanded(child: PostDetailed(post: widget.post)),
+                    UsersOnline(options: filterOptions)
+                  ]),
             ),
             drawer: const CustomDrawer()));
   }

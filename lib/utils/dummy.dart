@@ -229,3 +229,90 @@
                 //         return Container();
                 //       }
                 //     }))
+
+
+
+
+
+
+
+
+
+
+
+// automaticallyImplyLeading: false,
+//             backgroundColor: const Color(0xFF092A45),
+//             title: Row(
+//               children: [
+//                 IconButton(
+//                   tooltip: "home",
+//                   onPressed: () {
+//                     context.go('/');
+//                   },
+//                   icon: Image.asset(
+//                     'images/logo_ashesi.png',
+//                     width: 50,
+//                     height: 50,
+//                   ),
+//                 ),
+//                 const Text(
+//                   "ashHUb",
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.w900,
+//                   ),
+//                 )
+//               ],
+//             ),
+//             centerTitle: true,
+//             actions: [
+//               // firebaseAuth.currentUser != null,
+//               currentUserId != null
+//                   ? FeedBar(
+//                       currentUserId: currentUserId,
+//                       openNotificationSidebar: openNotificationSidebar,
+//                       getTotalNotifications: getTotalUserNotifications)
+//                   : FeedBar(
+//                       getTotalNotifications: getTotalUserNotifications,
+//                       currentUserId: currentUserId,
+//                       openNotificationSidebar: openNotificationSidebar)
+//             ],
+
+
+
+
+//  AppBar(
+            //   automaticallyImplyLeading: false,
+            //   backgroundColor: const Color(0xFF092A45),
+            //   title: Row(
+            //     children: [
+            //       IconButton(
+            //         onPressed: () {
+            //           context.go('/');
+            //         },
+            //         icon: Image.asset(
+            //           'images/logo_ashesi.png',
+            //           width: 50,
+            //           height: 50,
+            //         ),
+            //       ),
+            //       const Text(
+            //         "ashHUb",
+            //         style: TextStyle(
+            //           fontWeight: FontWeight.w900,
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            //   centerTitle: true,
+            //   actions: [
+            //     currentUserId != null
+            //         ? FeedBar(
+            //             currentUserId: currentUserId,
+            //             openNotificationSidebar: openNotificationSidebar,
+            //             getTotalNotifications: getTotalUserNotifications)
+            //         : FeedBar(
+            //             getTotalNotifications: getTotalUserNotifications,
+            //             currentUserId: currentUserId,
+            //             openNotificationSidebar: openNotificationSidebar)
+            //   ],
+            // ),

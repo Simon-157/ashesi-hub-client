@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/state_preference/user_store.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/widgets/auth_dialog.dart';
 import 'package:provider/provider.dart';
 

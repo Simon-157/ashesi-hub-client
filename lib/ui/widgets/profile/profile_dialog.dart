@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 
 class UserProfileTooltip extends StatefulWidget {
   final String username;

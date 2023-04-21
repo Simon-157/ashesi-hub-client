@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/widgets/microsoft_signin_button.dart';
 
 class AuthDialog extends StatefulWidget {

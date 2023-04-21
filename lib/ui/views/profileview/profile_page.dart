@@ -9,7 +9,7 @@ import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/ui/views/profileview/profile_buttons.dart';
 import 'package:hub_client/ui/views/profileview/profile_details.dart';
 import 'package:hub_client/ui/widgets/profile/profile_post_grid.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
 class Profile extends StatefulWidget {

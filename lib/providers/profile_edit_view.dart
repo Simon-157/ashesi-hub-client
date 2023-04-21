@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hub_client/services/api_services/update_profile.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

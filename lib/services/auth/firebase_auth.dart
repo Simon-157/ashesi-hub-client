@@ -85,7 +85,7 @@ Future<String?> signInWithEmailPassword(
 }
 
 // MICROSOFT AUTHENTICATION
-Future<UserCredential> signInWithMicrosoft() async {
+Future<UserCredential> signInWithMicrosoft(BuildContext context) async {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // Create a new instance of the Microsoft OAuth provider
@@ -100,6 +100,10 @@ Future<UserCredential> signInWithMicrosoft() async {
 
   // Return the user credential
   uid = authCredential.user!.uid;
+
+  final userState = Provider.of<UserState>(context, listen: false);
+  userState.setUser(authCredential.user!.uid, authCredential.user!.email);
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('auth', true);
   prefs.setString('current_user_id', authCredential.user!.uid);

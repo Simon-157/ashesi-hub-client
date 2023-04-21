@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/students.dart';
 import 'package:hub_client/services/api_services/register_api_service.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({Key? key}) : super(key: key);

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hub_client/components/custome_button.dart';
-import 'package:hub_client/ui/widgets/profile/profile_edit_form.dart';
 import 'package:hub_client/ui/widgets/profile/profile_edit_dialog.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
@@ -14,7 +13,7 @@ profileActionButton(user, isFollowing, String id, BuildContext context,
         text: "Edit Profile",
         function: () {
           Navigator.of(context).push(CupertinoPageRoute(
-            builder: (_) => UserFormWidget(
+            builder: (_) => EditProfile(
               user: user,
             ),
           ));

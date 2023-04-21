@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 
 class MicrosoftButton extends StatefulWidget {
   const MicrosoftButton({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _MicrosoftButtonState extends State<MicrosoftButton> {
           setState(() {
             _isProcessing = true;
           });
-          await signInWithMicrosoft().then((result) {
+          await signInWithMicrosoft(context).then((result) {
             print(result);
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacement(

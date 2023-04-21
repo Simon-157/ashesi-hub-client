@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/services/firestore_services/app_notification_service.dart';
 import 'package:hub_client/services/firestore_services/posts_service.dart';
-import 'package:hub_client/utils/authentication.dart';
+import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:hub_client/widgets/loaders.dart';
 import 'package:like_button/like_button.dart';

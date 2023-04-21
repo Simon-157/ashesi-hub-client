@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hub_client/components/custome_button.dart';
 import 'package:hub_client/models/user_model.dart';
+import 'package:hub_client/services/follow_user_service.dart';
+import 'package:hub_client/services/profile_services.dart';
+import 'package:hub_client/ui/views/profileview/profile_buttons.dart';
 import 'package:hub_client/ui/views/profileview/profile_details.dart';
-import 'package:hub_client/ui/widgets/profile/profile_edit_dialog.dart';
+import 'package:hub_client/ui/widgets/profile/profile_post_grid.dart';
 import 'package:hub_client/utils/authentication.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
@@ -25,28 +28,46 @@ class _ProfileState extends State<Profile> {
   int followersCount = 0;
   int followingCount = 0;
   bool isFollowing = false;
-  late UserModel users;
+  late UserModel student;
   final DateTime timestamp = DateTime.now();
   ScrollController controller = ScrollController();
 
-  currentUserId() {
-    return firebaseAuth.currentUser?.uid;
+  unFollow() async {
+    Stream<DocumentSnapshot> userStream = getUserSnapshot(currentUserId());
+    userStream.listen((DocumentSnapshot doc) {
+      student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    });
+
+    setState(() {
+      isFollowing = false;
+    });
+
+    await handleUnfollowDeletion(widget.profileId);
+  }
+
+  Follow() async {
+    Stream<DocumentSnapshot> userStream = getUserSnapshot(currentUserId());
+    userStream.listen((DocumentSnapshot doc) {
+      student = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    });
+
+    setState(() {
+      isFollowing = true;
+    });
+
+    await handleFollowUpdate(widget.profileId, student);
   }
 
   @override
   void initState() {
     super.initState();
-    checkIfFollowing();
+    checkUserFollowing();
   }
 
-  checkIfFollowing() async {
-    DocumentSnapshot doc = await followersRef
-        .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
-        .get();
+  void checkUserFollowing() async {
+    bool result = await isUserFollowing(widget.profileId!);
     setState(() {
-      isFollowing = doc.exists;
+      isFollowing = result;
     });
   }
 
@@ -124,10 +145,8 @@ class _ProfileState extends State<Profile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     StreamBuilder(
-                                      stream: postRef
-                                          .where('ownerId',
-                                              isEqualTo: widget.profileId)
-                                          .snapshots(),
+                                      stream: getUserPostsSnapshot(
+                                          widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
@@ -136,10 +155,10 @@ class _ProfileState extends State<Profile> {
                                               snapshot.data;
                                           List<DocumentSnapshot> docs =
                                               snap!.docs;
-                                          return buildCount(
+                                          return actionCount(
                                               "POSTS", docs.length);
                                         } else {
-                                          return buildCount("POSTS", 0);
+                                          return actionCount("POSTS", 0);
                                         }
                                       },
                                     ),
@@ -151,10 +170,8 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: followersRef
-                                          .doc(widget.profileId)
-                                          .collection('userFollowers')
-                                          .snapshots(),
+                                      stream: getUserFollowersSnapshot(
+                                          widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
@@ -163,10 +180,10 @@ class _ProfileState extends State<Profile> {
                                               snapshot.data;
                                           List<DocumentSnapshot> docs =
                                               snap!.docs;
-                                          return buildCount(
+                                          return actionCount(
                                               "FOLLOWERS", docs.length);
                                         } else {
-                                          return buildCount("FOLLOWERS", 0);
+                                          return actionCount("FOLLOWER", 0);
                                         }
                                       },
                                     ),
@@ -178,10 +195,8 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     StreamBuilder(
-                                      stream: followingRef
-                                          .doc(widget.profileId)
-                                          .collection('userFollowing')
-                                          .snapshots(),
+                                      stream: getUserFollowingSnapshot(
+                                          widget.profileId!),
                                       builder: (context,
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
@@ -190,10 +205,10 @@ class _ProfileState extends State<Profile> {
                                               snapshot.data;
                                           List<DocumentSnapshot> docs =
                                               snap!.docs;
-                                          return buildCount(
+                                          return actionCount(
                                               "FOLLOWING", docs.length);
                                         } else {
-                                          return buildCount("FOLLOWING", 0);
+                                          return actionCount("FOLLOWING", 0);
                                         }
                                       },
                                     ),
@@ -201,7 +216,39 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ),
                             ),
-                            buildProfileButton(user, context),
+                            Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                profileActionButton(
+                                    user,
+                                    isFollowing,
+                                    widget.profileId!,
+                                    context,
+                                    Follow,
+                                    unFollow),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                profilePostsButton(
+                                    user,
+                                    isFollowing,
+                                    widget.profileId!,
+                                    context,
+                                    Follow,
+                                    unFollow),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                profileLikesButton(
+                                    user,
+                                    isFollowing,
+                                    widget.profileId!,
+                                    context,
+                                    Follow,
+                                    unFollow)
+                              ],
+                            ))
                           ],
                         );
                       }
@@ -210,238 +257,15 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              // TODO SILVER DELEGATES TO SHOW USER POSTS
+              // TODO SILVER DELEGATES TO SHOW POSTS MADE BY THIS USER
+              // ProfilePostsGrid(profileId: widget.profileId)
+              SliverToBoxAdapter(
+                child: ProfilePostsGrid(
+                  profileId: widget.profileId,
+                ),
+              )
             ],
           ),
         ));
-  }
-
-  buildCount(String label, int count) {
-    return Column(
-      children: <Widget>[
-        Text(
-          count.toString(),
-          style: const TextStyle(
-            color: Colors.green,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Ubuntu-Regular',
-          ),
-        ),
-        const SizedBox(height: 3.0),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.green,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'Ubuntu-Regular',
-          ),
-        )
-      ],
-    );
-  }
-
-  buildProfileButton(user, BuildContext context) {
-    //if isMe then display "edit profile"
-    bool isMe = widget.profileId == firebaseAuth.currentUser!.uid;
-    if (isMe) {
-      return buildButton(
-          text: "Edit Profile",
-          function: () {
-            Navigator.of(context).push(CupertinoPageRoute(
-              builder: (_) => EditProfile(
-                user: user,
-              ),
-            ));
-          });
-      //if you are already following the user then "unfollow"
-    } else if (isFollowing) {
-      return buildButton(
-        text: "Unfollow",
-        function: handleUnfollow,
-      );
-      //if you are not following the user then "follow"
-    } else if (!isFollowing) {
-      return buildButton(
-        text: "Follow",
-        function: handleFollow,
-      );
-    }
-  }
-
-  buildButton({String? text, Function()? function}) {
-    return Center(
-        child: GestureDetector(
-      onTap: function,
-      child: Container(
-        height: 40.0,
-        width: 200.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0),
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Theme.of(context).colorScheme.secondary,
-              const Color(0xff597FDB),
-            ],
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text!,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-    ));
-  }
-
-  handleUnfollow() async {
-    DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
-    users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    setState(() {
-      isFollowing = false;
-    });
-    //remove follower
-    followersRef
-        .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
-    });
-    //remove following
-    followingRef
-        .doc(currentUserId())
-        .collection('userFollowing')
-        .doc(widget.profileId)
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
-    });
-    //remove from notifications feeds
-    notificationRef
-        .doc(widget.profileId)
-        .collection('notifications')
-        .doc(currentUserId())
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
-    });
-  }
-
-  handleFollow() async {
-    DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
-    users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    setState(() {
-      isFollowing = true;
-    });
-    //updates the followers collection of the followed user
-    followersRef
-        .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
-        .set({});
-    //updates the following collection of the currentUser
-    followingRef
-        .doc(currentUserId())
-        .collection('userFollowing')
-        .doc(widget.profileId)
-        .set({});
-    //update the notification feeds
-    notificationRef
-        .doc(widget.profileId)
-        .collection('notifications')
-        .doc(currentUserId())
-        .set({
-      "type": "follow",
-      "ownerId": widget.profileId,
-      "username": users.username,
-      "userId": users.user_id,
-      "userDp": users.avatar_url,
-      "timestamp": timestamp,
-    });
-  }
-
-  buildPostView() {
-    return buildGridPost();
-  }
-
-  buildGridPost() {
-    // return StreamGridWrapper(
-    //   shrinkWrap: true,
-    //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-    //   stream: postRef
-    //       .where('ownerId', isEqualTo: widget.profileId)
-    //       .orderBy('timestamp', descending: true)
-    //       .snapshots(),
-    //   physics: const NeverScrollableScrollPhysics(),
-    //   itemBuilder: (_, DocumentSnapshot snapshot) {
-    //     PostModel posts =
-    //         PostModel.fromJson(snapshot.data() as Map<String, dynamic>);
-    //     return PostTile(
-    //       post: posts,
-    //     );
-    //   },
-    // );
-  }
-
-  buildLikeButton() {
-    return StreamBuilder(
-      stream: favUsersRef
-          .where('postId', isEqualTo: widget.profileId)
-          .where('userId', isEqualTo: currentUserId())
-          .snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasData) {
-          List<QueryDocumentSnapshot> docs = snapshot.data?.docs ?? [];
-          return GestureDetector(
-            onTap: () {
-              if (docs.isEmpty) {
-                favUsersRef.add({
-                  'userId': currentUserId(),
-                  'postId': widget.profileId,
-                  'dateCreated': Timestamp.now(),
-                });
-              } else {
-                favUsersRef.doc(docs[0].id).delete();
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 3.0,
-                    blurRadius: 5.0,
-                  )
-                ],
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Icon(
-                  docs.isEmpty
-                      ? CupertinoIcons.heart
-                      : CupertinoIcons.heart_fill,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          );
-        }
-        return Container();
-      },
-    );
   }
 }

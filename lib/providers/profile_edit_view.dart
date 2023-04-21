@@ -74,7 +74,7 @@ class EditProfileViewModel extends ChangeNotifier {
         loading = true;
         notifyListeners();
 
-        var status = ApiService.updateProfile(data, uid);
+        var status = UpdateProfileService.updateProfile(data, uid);
         Navigator.pop(context);
         showInSnackBar('Profile updated', context);
         print("updated");

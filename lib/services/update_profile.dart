@@ -5,12 +5,12 @@ import 'package:hub_client/services/base_service.dart';
 
 import '../enums/constants.dart';
 
-
-/// The `ApiService` class provides a static method to update a student profile using HTTP PUT request
+/// The `UpdateProfileService` class provides a static method to update a student profile using HTTP PUT request
 /// with JSON data.
-class ApiService extends Service {
-  static Future<dynamic> updateProfile(Map<String, dynamic> formData, profileId) async {
-  final apiUrl = '${Constants.apiBaseUrl}/update_student/$profileId';
+class UpdateProfileService extends Service {
+  static Future<Map<String, dynamic>> updateProfile(
+      Map<String, dynamic> formData, profileId) async {
+    final apiUrl = '${Constants.apiBaseUrl}/update_student/$profileId';
     final url = Uri.parse(apiUrl);
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -22,8 +22,7 @@ class ApiService extends Service {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to update profile');
-            // return json.decode(response.body);
-
+      // return json.decode(response.body);
     }
   }
 }

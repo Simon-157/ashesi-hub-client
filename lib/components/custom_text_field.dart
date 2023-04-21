@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/components/card_custom.dart';
+import 'package:hub_client/components/custom_widget_attributes.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? hintText;
@@ -51,24 +52,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
               child: TextFormField(
                 cursorColor: Theme.of(context).colorScheme.secondary,
                 textCapitalization: TextCapitalization.none,
-                // onChanged: (val) {
-                //   error = widget.validateFunction!(val);
-                //   setState(() {});
-                //   widget.onSaved!(val);
-                // },
                 style: const TextStyle(
                   fontSize: 15.0,
                 ),
                 key: widget.key,
                 controller: widget.controller,
-                // validator: widget.validateFunction,
-                // onSaved: (val) {
-                //   error = widget.validateFunction!(val);
-                //   setState(() {});
-                //   widget.onSaved!(val!);
-                // },
-                // focusNode: widget.focusNode,
-
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     widget.prefix,
@@ -114,27 +102,4 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 
-  border(BuildContext context) {
-    return const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(30.0),
-      ),
-      borderSide: BorderSide(
-        color: Colors.white,
-        width: 0.0,
-      ),
-    );
-  }
-
-  focusBorder(BuildContext context) {
-    return OutlineInputBorder(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(30.0),
-      ),
-      borderSide: BorderSide(
-        color: Theme.of(context).colorScheme.secondary,
-        width: 1.0,
-      ),
-    );
-  }
 }

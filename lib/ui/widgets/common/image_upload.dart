@@ -46,7 +46,7 @@ class _ImageUploaderState extends State<ImageUploader> {
       children: [
         IconButton(
           onPressed: _pickImage,
-          icon: const Icon(Icons.image_outlined),
+          icon: const Icon(Icons.photo),
         ),
         if (imageUrl != null)
           CachedNetworkImage(

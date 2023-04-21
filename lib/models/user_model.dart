@@ -11,6 +11,7 @@ class UserModel {
   late String avatar_url;
   late String residence;
   late bool isOnline;
+  DateTime date_of_birth = DateTime(2022, 4, 5);
 
   // late DateTime date_of_birth;
 
@@ -38,7 +39,7 @@ class UserModel {
     // DateTime.fromMillisecondsSinceEpoch(json['date_of_birth'] * 1000);
   }
 
- Map<String, dynamic> toJson(Future<DocumentSnapshot<Object?>> future) {
+  Map<String, dynamic> toJson(Future<DocumentSnapshot<Object?>> future) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['first_name'] = username;
     data['email_or_phone'] = email;

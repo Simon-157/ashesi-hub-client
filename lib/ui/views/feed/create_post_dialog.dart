@@ -104,13 +104,12 @@ class _CreatePostDialogState extends State<CreatePostDialog> {
                       //TODO: Add emoji selection functionality
                     },
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.photo),
-                    onPressed: () {
-                      ImageUploader(onImageUrlChanged: setImageUrl);
-                      //TODO: Add image attachment functionality
-                    },
+                  const SizedBox(
+                    width: 4,
                   ),
+                  ImageUploader(
+                    onImageUrlChanged: setImageUrl,
+                  )
                 ],
               ),
               const SizedBox(height: 20),

@@ -1,18 +1,14 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  late String id;
   late String postId;
   late String ownerId;
   late String username;
   late String description;
   late String mediaUrl;
   late Timestamp timestamp;
-  
 
   PostModel({
-    required this.id,
     required this.postId,
     required this.ownerId,
     required this.description,
@@ -20,19 +16,19 @@ class PostModel {
     required this.username,
     required this.timestamp,
   });
-  PostModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    postId = json['postId'];
-    ownerId = json['ownerId'];
-    username= json['username'];
-    description = json['description'];
-    mediaUrl = json['mediaUrl'];
-    timestamp = json['timestamp'];
+
+  PostModel.fromJson(Map<String, dynamic> json_data) {
+    postId = json_data['postId'];
+    ownerId = json_data['ownerId'];
+    username = json_data['username'];
+    description = json_data['description'];
+    mediaUrl = json_data['mediaUrl'];
+    timestamp = json_data['timestamp'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+
     data['postId'] = postId;
     data['ownerId'] = ownerId;
     data['description'] = description;

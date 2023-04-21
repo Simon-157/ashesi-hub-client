@@ -11,6 +11,7 @@ Stream<UserModel?> getAuthUser(BuildContext context,
     StreamController<UserModel?> streamController) async* {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? currentUserId = prefs.getString('current_user_id') ?? "";
+  // ignore: use_build_context_synchronously
   final userState = Provider.of<UserState>(context, listen: false);
   print("getAuth----------------------${userState.uid}");
 

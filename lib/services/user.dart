@@ -10,7 +10,6 @@ class UserService extends Service {
     return firebaseAuth.currentUser!.uid;
   }
 
-
   setUserStatus(bool isOnline) {
     var user = firebaseAuth.currentUser;
     if (user != null) {

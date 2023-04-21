@@ -11,7 +11,9 @@ class MyStudentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map>(
+
       future: ApiService.getStudent(profileId),
+      
       builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
         if (snapshot.hasData) {
           final student = snapshot.data!;

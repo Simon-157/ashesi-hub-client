@@ -5,13 +5,6 @@ class UserState extends ChangeNotifier {
   String? email;
   bool isAuthenticated = false;
 
-  // void setUser(String? uid, String? email) {
-  //   this.uid = uid;
-  //   this.email = email;
-  //   isAuthenticated = true;
-  //   notifyListeners();
-  // }
-
   void setUser(String? id, String? u_email) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       uid = id;

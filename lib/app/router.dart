@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hub_client/state_management/user_state.dart';
 import 'package:hub_client/ui/views/auth/login_page.dart';
 import 'package:hub_client/ui/views/auth/register_page.dart';
-import 'package:hub_client/ui/views/feed/create_post.dart';
 import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/ui/views/profileview/profile_page.dart';
@@ -70,19 +69,7 @@ final GoRouter router = GoRouter(
             }
           },
         ),
-        GoRoute(
-          path: 'feeds/create_post',
-          builder: (BuildContext context, GoRouterState state) {
-            if (isAuthenticated()) {
-              return ChangeNotifierProvider(
-                create: (_) => PostsViewModel(),
-                child: const CreatePostPage(),
-              );
-            } else {
-              return const LoginPage();
-            }
-          },
-        ),
+       
       ],
     ),
   ],

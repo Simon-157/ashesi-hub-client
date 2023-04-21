@@ -7,7 +7,6 @@ import 'package:hub_client/ui/widgets/common/custom_drawer.dart';
 import 'package:hub_client/ui/widgets/feed/filter_options.dart';
 import 'package:hub_client/ui/widgets/feed/users_online.dart';
 import 'package:hub_client/ui/widgets/post/post_detail.dart';
-import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

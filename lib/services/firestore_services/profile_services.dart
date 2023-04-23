@@ -70,4 +70,11 @@ class ProfileService {
   static Future<DocumentSnapshot> getUserDocument(String profileId) async {
     return await usersRef.doc(profileId).get();
   }
+
+
+static Future<bool> doesDocumentExist(String documentId) async {
+  DocumentSnapshot snapshot = await usersRef.doc(documentId).get();
+  return snapshot.exists;
+}
+
 }

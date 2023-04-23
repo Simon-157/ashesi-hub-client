@@ -42,7 +42,7 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: 'register',
+          path: 'upgrade_profile',
           builder: (BuildContext context, GoRouterState state) {
             return const RegisterPage();
           },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hub_client/ui/widgets/common/menu.dart';
 import 'package:hub_client/ui/widgets/register/register_body.dart';
+import 'package:hub_client/widgets/top_bar.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -18,9 +18,9 @@ class RegisterPage extends StatelessWidget {
         ),
         child: ListView(
           padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 7),
+              horizontal: MediaQuery.of(context).size.width / 10),
           children: [
-            Menu(),
+            const TopBarContents(),
             RegisterBody(),
           ],
         ),

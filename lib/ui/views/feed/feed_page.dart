@@ -24,6 +24,24 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
     scaffoldKey.currentState?.openDrawer();
   }
 
+  void _handleSearch(String query) {
+    setState(() {
+      searchQuery = query;
+    });
+  }
+
+  List<PostModel> _filterPosts(List<PostModel> posts) {
+    if (selectedFilters.isEmpty && searchQuery.isEmpty) {
+      return posts;
+    }
+
+    return posts.where((post) {
+      // final bool matchesFilter = selectedFilters.contains(post.description);
+      final bool matchesSearch = post.description.contains(searchQuery);
+      return matchesSearch;
+    }).toList();
+  }
+
   int page = 5;
   bool loadingMore = false;
   ScrollController scrollController = ScrollController();
@@ -32,11 +50,10 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
     'All',
     'Popular',
     'Recent',
-    'Favorites',
+    'Football',
     'images',
     'videos',
-    'entertainment',
-    'beauty'
+    'Education',
   ];
   Set<String> selectedFilters = {};
   String searchQuery = "";
@@ -46,7 +63,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         setState(() async {
-          page = page + 20;
+          page = page + 10;
           loadingMore = true;
           prefs = await SharedPreferences.getInstance();
         });
@@ -76,6 +93,7 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
               automaticallyImplyLeading: false,
               flexibleSpace: FeedAppBar(
                 openNotificationSidebar: openNotificationSidebar,
+                onSearch: _handleSearch,
               )),
           body: RefreshIndicator(
             // color: Theme.of(context).colorScheme.secondary,
@@ -87,27 +105,48 @@ class _FeedsState extends State<Feeds> with AutomaticKeepAliveClientMixin {
               physics: const NeverScrollableScrollPhysics(),
               child: Row(
                 children: [
-                  FilterOptions(options: filterOptions),
+                  Container(
+                    width: 200,
+                    child: FilterOptions(
+                      options: filterOptions,
+                      selectedFilters: selectedFilters.toList(),
+                      onFilterChanged: (filters) {
+                        setState(() {
+                          selectedFilters = filters.toSet();
+                        });
+                      },
+                    ),
+                  ),
+
+                  // FilterOptions(options: filterOptions),
+
                   Expanded(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
+
+                      // ...
                       child: StreamBuilder<QuerySnapshot>(
                         stream: postRef
                             .orderBy('timestamp', descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            var docs = snapshot.data!.docs;
+                            final posts = snapshot.data!.docs
+                                .map((doc) => PostModel.fromJson(
+                                    doc.data() as Map<String, dynamic>))
+                                .toList();
+                            final filteredPosts = _filterPosts(posts);
                             return ListView.builder(
+                              // ...
                               controller: scrollController,
-                              itemCount: docs.length,
                               shrinkWrap: true,
+                              itemCount: filteredPosts.length,
                               itemBuilder: (context, index) {
-                                PostModel posts = PostModel.fromJson(
-                                    docs[index].data() as Map<String, dynamic>);
                                 return Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: UserPost(post: posts),
+                                  child: UserPost(
+                                    post: filteredPosts[index],
+                                  ),
                                 );
                               },
                             );

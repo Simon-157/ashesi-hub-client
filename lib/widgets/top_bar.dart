@@ -19,10 +19,19 @@ class _TopBarContentsState extends State<TopBarContents> {
     false,
   ];
 
+  bool userModifiedProfile() {
+    if (firebaseAuth.currentUser != null) {
+      bool doesExist = false;
+      ProfileService.doesDocumentExist(firebaseAuth.currentUser!.uid)
+          .then((value) => doesExist = value);
+      return doesExist;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-
     return PreferredSize(
       preferredSize: Size(screenSize.width, 1000),
       child: Padding(
@@ -89,63 +98,87 @@ class _TopBarContentsState extends State<TopBarContents> {
             SizedBox(
               width: screenSize.width / 50,
             ),
-            // TODO DYNAMICALLY SHOW LOGIN AND USER AVATAR
-            firebaseAuth.currentUser != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: 20.0),
-                      const SizedBox(width: 20.0),
-                      Tooltip(
-                        message: "View Profile",
-                        preferBelow: false,
-                        child: InkWell(
-                          onTap: () {
-                            context.go(
-                                '/profile/${firebaseAuth.currentUser?.uid}');
-                          },
-                          child: StreamBuilder<DocumentSnapshot>(
-                            stream: ProfileService.getUserSnapshot(
-                                firebaseAuth.currentUser!.uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return const Icon(Icons.error);
-                              }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else {
-                                final userDoc = snapshot.data!;
-                                final avatarUrl =
-                                    userDoc.get('avatar_url') as String?;
 
-                                return CircleAvatar(
-                                  radius: 15.0,
-                                  backgroundImage: NetworkImage(avatarUrl!),
-                                );
-                              }
-                            },
+            // TODO DYNAMICALLY SHOW LOGIN AND USER AVATAR
+
+            firebaseAuth.currentUser != null
+                ? userModifiedProfile()
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 20.0),
+                          const SizedBox(width: 20.0),
+                          Tooltip(
+                            message: "View Profile",
+                            preferBelow: false,
+                            child: StreamBuilder<DocumentSnapshot>(
+                              stream: ProfileService.getUserSnapshot(
+                                  firebaseAuth.currentUser!.uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Icon(Icons.error);
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasData) {
+                                  final userDoc = snapshot.data!;
+                                  final avatarUrl =
+                                      userDoc.get('avatar_url') as String?;
+
+                                  return InkWell(
+                                      onTap: () {
+                                        context.go(
+                                            '/profile/${firebaseAuth.currentUser?.uid}');
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15.0,
+                                        backgroundImage:
+                                            NetworkImage(avatarUrl!),
+                                      ));
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      context.go(
+                                          '/profile/${firebaseAuth.currentUser?.uid}');
+                                    },
+                                    child: const Text("improve profile"),
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 30.0),
-                      IconButton(
-                        tooltip: "logout",
+                          const SizedBox(width: 30.0),
+                          IconButton(
+                            tooltip: "logout",
+                            mouseCursor: MaterialStateMouseCursor.clickable,
+                            padding: const EdgeInsets.only(right: 5.0),
+                            onPressed: () {
+                              signOut(context);
+                              context.go('/');
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                              size: 30.0,
+                              color: Color.fromARGB(255, 213, 243, 239),
+                            ),
+                          ),
+                        ],
+                      )
+                    : IconButton(
+                        tooltip: "upgrade profile",
                         mouseCursor: MaterialStateMouseCursor.clickable,
                         padding: const EdgeInsets.only(right: 5.0),
                         onPressed: () {
-                          signOut(context);
-                          context.go('/');
+                          context.go('/upgrade_profile');
                         },
                         icon: const Icon(
-                          Icons.logout,
+                          Icons.person_off_outlined,
                           size: 30.0,
-                          color: Color.fromARGB(255, 213, 243, 239),
+                          color: Color.fromARGB(255, 198, 230, 221),
                         ),
-                      ),
-                    ],
-                  )
+                      )
                 : IconButton(
                     tooltip: "login",
                     mouseCursor: MaterialStateMouseCursor.clickable,

@@ -27,6 +27,7 @@ class _PostDetailedState extends State<PostDetailed> {
     return Scaffold(
         drawerScrimColor: Colors.transparent,
         appBar: AppBar(
+          title:Text("${widget.post.username}'s post"),
           backgroundColor: const Color(0xFF092A45),
         ),
         body: Center(

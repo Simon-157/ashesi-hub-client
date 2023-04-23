@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 class UserFormWidget extends StatefulWidget {
   final UserModel user;
 
-  UserFormWidget({required this.user});
+  const UserFormWidget({required this.user});
 
   @override
   _UserFormWidgetState createState() => _UserFormWidgetState();

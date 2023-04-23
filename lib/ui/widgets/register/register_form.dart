@@ -28,7 +28,6 @@ class RegisterForm extends StatelessWidget {
           _buildTextField('Enter your major', majorController),
           _buildTextField('Choose your year group', yeargroupController),
           _buildTextField('Choose your year group', studentIdController),
-          _buildPasswordField(),
           _buildElevatedButton(context),
         ],
       ),
@@ -67,37 +66,7 @@ class RegisterForm extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordField() {
-    return SizedBox(
-        width: 250,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Password',
-              suffixIcon: const Icon(
-                Icons.visibility_off_outlined,
-                color: Colors.grey,
-              ),
-              filled: true,
-              fillColor: const Color.fromARGB(255, 16, 82, 137),
-              labelStyle: const TextStyle(
-                  fontSize: 12, color: Color.fromARGB(255, 210, 220, 226)),
-              contentPadding: const EdgeInsets.only(left: 30),
-              enabledBorder: OutlineInputBorder(
-                borderSide:
-                    const BorderSide(color: Color.fromARGB(255, 15, 81, 125)),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide:
-                    const BorderSide(color: Color.fromARGB(255, 210, 220, 226)),
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-        ));
-  }
+
 
   Widget _buildElevatedButton(BuildContext context) {
     return Padding(

@@ -25,6 +25,25 @@ class _PostViewState extends State<PostView>
     scaffoldKey.currentState?.openDrawer();
   }
 
+
+   void _handleSearch(String query) {
+    setState(() {
+      searchQuery = query;
+    });
+  }
+
+  List<PostModel> _filterPosts(List<PostModel> posts) {
+    if (selectedFilters.isEmpty && searchQuery.isEmpty) {
+      return posts;
+    }
+
+    return posts.where((post) {
+      final bool matchesFilter = selectedFilters.contains(post.description);
+      final bool matchesSearch = post.description.contains(searchQuery);
+      return matchesFilter && matchesSearch;
+    }).toList();
+  }
+
   int page = 5;
   bool loadingMore = false;
   ScrollController scrollController = ScrollController();
@@ -82,6 +101,7 @@ class _PostViewState extends State<PostView>
               automaticallyImplyLeading:false,
                 flexibleSpace: FeedAppBar(
               openNotificationSidebar: openNotificationSidebar,
+               onSearch: _handleSearch,
             )),
             body: Container(
               decoration: const BoxDecoration(

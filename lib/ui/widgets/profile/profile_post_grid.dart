@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/ui/views/post/post_view.dart';
@@ -57,8 +58,7 @@ class _ProfilePostsGridState extends State<ProfilePostsGrid> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigate to post details screen
-                        PostView(post: post);
+                        context.go('/post/${post.postId}');
                       },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/services/base_service.dart';
 import 'package:hub_client/state_management/user_state.dart';
@@ -42,6 +43,21 @@ class PostService extends Service {
     }).onError((error, stackTrace) => null);
   }
 
+
+  Future<PostModel?> getPost(String postId) async {
+    try {
+      final postDoc = await postRef.doc(postId).get();
+      if (!postDoc.exists) {
+        return null;
+      }
+      final postJson = postDoc.data() as Map<String, dynamic>;
+      final postModel = PostModel.fromJson(postJson);
+      return postModel;
+    } catch (e) {
+      print('Error fetching post: $e');
+      return null;
+    }
+  }
 
   
 }

@@ -39,4 +39,5 @@ class PostModel {
     data['username'] = username;
     return data;
   }
+  
 }

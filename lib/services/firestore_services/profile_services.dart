@@ -21,7 +21,7 @@ class ProfileService {
 
       // Query users collection for users with similar interests
       QuerySnapshot querySnapshotA =
-          await usersRef.where('major', isEqualTo: interestsA).limit(5).get();
+          await usersRef.where('major', isEqualTo: interestsA).limit(6).get();
 
       QuerySnapshot querySnapshotB = await usersRef
           .where('residence', isEqualTo: interestsB)

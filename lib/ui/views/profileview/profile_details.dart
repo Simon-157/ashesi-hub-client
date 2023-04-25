@@ -104,6 +104,7 @@ class MyStudentWidget extends StatelessWidget {
                                     width: 130.0,
                                     child: Text(
                                       student['major'],
+                                      
                                       style: const TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w600,

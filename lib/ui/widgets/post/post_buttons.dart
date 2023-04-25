@@ -64,7 +64,6 @@ buildLikeButton(PostModel post) {
             break;
           }
         }
-
 // TODO: REMOVE ALL DOCUMENT AND DELETION FOR LIKE TO A SERVICE FILE
         Future<bool> onLikeButtonTapped(bool isLiked) async {
           if (currentLike == null) {

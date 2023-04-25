@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
@@ -14,11 +15,12 @@ class SuggestedUsersScreen extends StatefulWidget {
 class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
   // late List<UserModel> _suggestedUsers;
   List<UserModel> _suggestedUsers = [];
-  bool _isFollowing = false;
+  late UserModel student;
 
   @override
   void initState() {
     super.initState();
+    // checkUserFollowing();
     _getSuggestedUsers();
   }
 
@@ -35,19 +37,7 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
     });
   }
 
-  void _followUser() {
-    // Do something when the user is followed
-    setState(() {
-      _isFollowing = true;
-    });
-  }
-
-  void _unfollowUser() {
-    // Do something when the user is unfollowed
-    setState(() {
-      _isFollowing = false;
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +51,7 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
               const Text(
                 "Suggested Students based on major",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 114, 229, 210),
+                    color: Color.fromARGB(255, 42, 102, 92),
                     fontSize: 16,
                     fontWeight: FontWeight.w200),
               ),
@@ -76,33 +66,31 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
                       return const SizedBox();
                     } else {
                       return ListTile(
-                        leading: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(user.avatarUrl),
-                        ),
-                        title: Text(
-                          user.username,
-                          style: const TextStyle(
-                              color: Color.fromARGB(232, 230, 245, 243),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w200),
-                        ),
-                        subtitle: Text(
-                          user.major,
-                          style: const TextStyle(
-                              color: Color.fromARGB(255, 89, 155, 144),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w200),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: profileActionButton(
-                          user: user,
-                          isFollowing: _isFollowing,
-                          context: context,
-                          follow: _followUser,
-                          unFollow: _unfollowUser,
-                        ),
-                      );
+                          leading: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(user.avatarUrl),
+                          ),
+                          title: Text(
+                            user.username,
+                            style: const TextStyle(
+                                color: Color.fromARGB(232, 230, 245, 243),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w200),
+                          ),
+                          subtitle: Text(
+                            user.major,
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 89, 155, 144),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w200),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: ElevatedButton(
+                            onPressed: () {
+                              context.go('/profile/${user.userId}');
+                            },
+                            child: const Text("Invade space"),
+                          ));
                     }
                   },
                 ),
@@ -110,24 +98,4 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
             ]));
   }
 
-  Widget profileActionButton({
-    required UserModel user,
-    required bool isFollowing,
-    required BuildContext context,
-    Function()? follow,
-    Function()? unFollow,
-  }) {
-    if (isFollowing) {
-      return ElevatedButton(
-        onPressed: unFollow,
-        child: const Text("Unfollow"),
-      );
-    } else if (!isFollowing) {
-      return ElevatedButton(
-        onPressed: follow,
-        child: const Text("Follow"),
-      );
-    }
-    return const SizedBox.shrink();
-  }
 }

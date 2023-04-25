@@ -55,12 +55,14 @@ buildUser(BuildContext context, PostModel post) {
                                 ),
                               ),
                             )
-                          : CircleAvatar(
+                          : Tooltip(
+                            message: "view user",
+                            child: CircleAvatar(
                               radius: 20.0,
                               backgroundImage: CachedNetworkImageProvider(
                                 user.avatarUrl,
                               ),
-                            ),
+                           ) ),
                       const SizedBox(width: 5.0),
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -74,9 +76,9 @@ buildUser(BuildContext context, PostModel post) {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const Text(
-                            'Ashesi',
-                            style: TextStyle(
+                           Text(
+                            user.residence,
+                            style: const TextStyle(
                               fontSize: 10.0,
                               color: Color(0xff4D4D4D),
                             ),

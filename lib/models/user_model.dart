@@ -60,7 +60,7 @@ class UserModel {
     bestMovie = data['best_movie'];
     residence = data['residence'];
     avatarUrl = data['avatar_url'];
-    dateOfBirth = data['date_of_birth'].toDate(); // Convert the new field from Firestore Timestamp to DateTime
+    dateOfBirth = DateTime.parse(data['date_of_birth']); // Convert the new field from Firestore Timestamp to DateTime
   }
 
 

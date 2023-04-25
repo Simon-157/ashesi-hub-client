@@ -11,6 +11,7 @@ import 'package:hub_client/ui/views/auth/login_page.dart';
 import 'package:hub_client/ui/views/auth/register_page.dart';
 import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
+import 'package:hub_client/ui/views/post/post_page.dart';
 import 'package:hub_client/ui/views/profileview/profile_page.dart';
 import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
@@ -55,6 +56,13 @@ final GoRouter router = GoRouter(
           path: 'feeds',
           builder: (BuildContext context, GoRouterState state) {
             return Feeds();
+          },
+        ),
+         GoRoute(
+          path: 'post/:id',
+          builder: (BuildContext context, GoRouterState state) {
+              final id = state.params['id'];
+            return PostPage(postId: id!,);
           },
         ),
         GoRoute(

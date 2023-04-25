@@ -1,6 +1,6 @@
 /// The Profile class displays a user's profile information and posts, and allows for
 /// following/unfollowing and navigation to different sections of the app.
-/// 
+///
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,8 +10,10 @@ import 'package:hub_client/components/custome_button.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/services/firestore_services/follow_user_service.dart';
 import 'package:hub_client/services/firestore_services/profile_services.dart';
+import 'package:hub_client/ui/views/profileview/full_user_details.dart';
 import 'package:hub_client/ui/views/profileview/profile_buttons.dart';
 import 'package:hub_client/ui/views/profileview/profile_details.dart';
+import 'package:hub_client/ui/widgets/profile/detailed.dart';
 import 'package:hub_client/ui/widgets/profile/profile_post_grid.dart';
 import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
@@ -256,23 +258,22 @@ class _ProfileState extends State<Profile> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                profilePostsButton(
-                                    user,
-                                    isFollowing,
-                                    widget.profileId!,
-                                    context,
-                                    Follow,
-                                    unFollow),
+                                SizedBox(
+                                  height: 40,
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return detailedProfile(user);
+                                          },
+                                        );
+                                      },
+                                      child: Text("Detailed Profile")),
+                                ),
                                 const SizedBox(
                                   width: 10,
-                                ),
-                                profileLikesButton(
-                                    user,
-                                    isFollowing,
-                                    widget.profileId!,
-                                    context,
-                                    Follow,
-                                    unFollow)
+                                )
                               ],
                             ))
                           ],
@@ -283,8 +284,9 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              // TODO SILVER DELEGATES TO SHOW POSTS MADE BY THIS USER
-              // ProfilePostsGrid(profileId: widget.profileId)
+
+              ///The ProfilePostsGrid widget takes a profileId parameter and
+              /// displays a grid of posts associated with that profile.
               SliverToBoxAdapter(
                 child: ProfilePostsGrid(
                   profileId: widget.profileId,

@@ -1,3 +1,5 @@
+/// The Feeds class is a StatefulWidget that displays a feed of posts with filter options, search
+/// functionality, and suggestions for who to follow.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/post_model.dart';

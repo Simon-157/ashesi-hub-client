@@ -1,3 +1,5 @@
+/// The `HomePage` class displays the main page of the Ashesi Hub app with a gradient background, top
+/// bar, and a section for users to explore and connect with like-minded individuals.
 import 'package:flutter/material.dart';
 import 'package:hub_client/widgets/top_bar.dart';
 

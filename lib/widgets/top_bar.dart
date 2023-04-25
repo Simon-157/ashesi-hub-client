@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hub_client/services/api_services/user.dart';
 import 'package:hub_client/services/firestore_services/profile_services.dart';
 import 'package:hub_client/services/auth/firebase_auth.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
@@ -19,14 +19,9 @@ class _TopBarContentsState extends State<TopBarContents> {
     false,
   ];
 
-  bool userModifiedProfile() {
-    if (firebaseAuth.currentUser != null) {
-      bool doesExist = false;
-      ProfileService.doesDocumentExist(firebaseAuth.currentUser!.uid)
-          .then((value) => doesExist = value);
-      return doesExist;
-    }
-    return false;
+  Future<bool> userModifiedProfile() async {
+    return await ProfileService.doesDocumentExist(
+        firebaseAuth.currentUser!.uid);
   }
 
   @override
@@ -102,83 +97,111 @@ class _TopBarContentsState extends State<TopBarContents> {
             // TODO DYNAMICALLY SHOW LOGIN AND USER AVATAR
 
             firebaseAuth.currentUser != null
-                ? userModifiedProfile()
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 20.0),
-                          const SizedBox(width: 20.0),
-                          Tooltip(
-                            message: "View Profile",
-                            preferBelow: false,
-                            child: StreamBuilder<DocumentSnapshot>(
-                              stream: ProfileService.getUserSnapshot(
-                                  firebaseAuth.currentUser!.uid),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Icon(Icons.error);
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                } else if (snapshot.hasData) {
-                                  final userDoc = snapshot.data!;
-                                  final avatarUrl =
-                                      userDoc.get('avatar_url') as String?;
+                ? FutureBuilder<bool>(
+                    future: userModifiedProfile(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+                      final bool modifiedProfile = snapshot.data ?? false;
 
-                                  return InkWell(
-                                      onTap: () {
-                                        context.go(
-                                            '/profile/${firebaseAuth.currentUser?.uid}');
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 15.0,
-                                        backgroundImage:
-                                            NetworkImage(avatarUrl!),
-                                      ));
-                                } else {
-                                  return InkWell(
-                                    onTap: () {
-                                      context.go(
-                                          '/profile/${firebaseAuth.currentUser?.uid}');
+                      return modifiedProfile
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(width: 20.0),
+                                const SizedBox(width: 20.0),
+                                Tooltip(
+                                  message: "View Profile",
+                                  preferBelow: false,
+                                  child: FutureBuilder<Map>(
+                                    future: UserService.getStudent(
+                                        firebaseAuth.currentUser!.uid),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const Icon(Icons.error);
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const CircularProgressIndicator(
+                                            strokeWidth: 2);
+                                      } else if (snapshot.hasData) {
+                                        final avatarUrl = snapshot
+                                            .data!['avatar_url'] as String?;
+
+                                        return InkWell(
+                                          onTap: () {
+                                            context.go(
+                                                '/profile/${firebaseAuth.currentUser?.uid}');
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 15.0,
+                                            backgroundImage:
+                                                NetworkImage(avatarUrl!),
+                                          ),
+                                        );
+                                      } else {
+                                        return InkWell(
+                                          onTap: () {
+                                            context.go(
+                                                '/profile/${firebaseAuth.currentUser?.uid}');
+                                          },
+                                          child: const Text("improve profile"),
+                                        );
+                                      }
                                     },
-                                    child: const Text("improve profile"),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 30.0),
-                          IconButton(
-                            tooltip: "logout",
-                            mouseCursor: MaterialStateMouseCursor.clickable,
-                            padding: const EdgeInsets.only(right: 5.0),
-                            onPressed: () {
-                              signOut(context);
-                              context.go('/');
-                            },
-                            icon: const Icon(
-                              Icons.logout,
-                              size: 30.0,
-                              color: Color.fromARGB(255, 213, 243, 239),
-                            ),
-                          ),
-                        ],
-                      )
-                    : IconButton(
-                        tooltip: "upgrade profile",
-                        mouseCursor: MaterialStateMouseCursor.clickable,
-                        padding: const EdgeInsets.only(right: 5.0),
-                        onPressed: () {
-                          context.go('/upgrade_profile');
-                        },
-                        icon: const Icon(
-                          Icons.person_off_outlined,
-                          size: 30.0,
-                          color: Color.fromARGB(255, 198, 230, 221),
-                        ),
-                      )
+                                  ),
+                                ),
+                                const SizedBox(width: 30.0),
+                                IconButton(
+                                  tooltip: "logout",
+                                  mouseCursor:
+                                      MaterialStateMouseCursor.clickable,
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  onPressed: () {
+                                    signOut(context);
+                                    context.go('/');
+                                  },
+                                  icon: const Icon(
+                                    Icons.logout,
+                                    size: 30.0,
+                                    color: Color.fromARGB(255, 213, 243, 239),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(children: [
+                              IconButton(
+                                tooltip: "upgrade profile",
+                                mouseCursor: MaterialStateMouseCursor.clickable,
+                                padding: const EdgeInsets.only(right: 5.0),
+                                onPressed: () {
+                                  context.go('/upgrade_profile');
+                                },
+                                icon: const Icon(
+                                  Icons.person_off_outlined,
+                                  size: 30.0,
+                                  color: Color.fromARGB(255, 198, 230, 221),
+                                ),
+                              ),
+                              const SizedBox(width: 30.0),
+                              IconButton(
+                                tooltip: "logout",
+                                mouseCursor: MaterialStateMouseCursor.clickable,
+                                padding: const EdgeInsets.only(right: 5.0),
+                                onPressed: () {
+                                  signOut(context);
+                                  context.go('/');
+                                },
+                                icon: const Icon(
+                                  Icons.logout,
+                                  size: 30.0,
+                                  color: Color.fromARGB(255, 213, 243, 239),
+                                ),
+                              ),
+                            ]);
+                    })
                 : IconButton(
                     tooltip: "login",
                     mouseCursor: MaterialStateMouseCursor.clickable,

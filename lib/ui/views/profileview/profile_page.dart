@@ -1,3 +1,7 @@
+/// The Profile class displays a user's profile information and posts, and allows for
+/// following/unfollowing and navigation to different sections of the app.
+/// 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

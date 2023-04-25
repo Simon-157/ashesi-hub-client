@@ -24,6 +24,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
   late TextEditingController _bestMovieController;
   late TextEditingController _majorController;
   late TextEditingController _residenceController;
+  late TextEditingController _dobController;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
     _studentIdController = TextEditingController(text: "");
     _residenceController = TextEditingController(text: "");
     _yearGroupController = TextEditingController(text: "");
+    _dobController = TextEditingController(text: "");
   }
 
   @override
@@ -47,7 +49,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
         onTap: () {},
         child: Container(
           padding: const EdgeInsets.all(20.0),
-          height: 550,
+          height: 580,
           width: 400,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -67,15 +69,15 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.perm_identity,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _lnameController,
-                  "first name",
+                  "last name",
                   const Icon(
                     Icons.perm_identity,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _studentIdController,
                   "Student Id",
@@ -83,7 +85,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.numbers_rounded,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _majorController,
                   "Major",
@@ -91,7 +93,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.cast_for_education,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _bestFoodController,
                   "Best Food",
@@ -99,7 +101,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.food_bank,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _bestMovieController,
                   "Best Movie",
@@ -107,7 +109,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.movie,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _residenceController,
                   "Residence",
@@ -115,7 +117,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.location_city,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
               _InputTextField(
                   _yearGroupController,
                   "Year Group",
@@ -123,7 +125,15 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                     Icons.group,
                     color: Color.fromARGB(238, 95, 225, 225),
                   )),
-              const SizedBox(height: 10),
+              const SizedBox(height: 7),
+              _InputDateField(
+                  _dobController,
+                  "Date of Birth",
+                  const Icon(
+                    Icons.calendar_today,
+                    color: Color.fromARGB(238, 95, 225, 225),
+                  )),
+              const SizedBox(height: 7),
               ElevatedButton(
                 style: const ButtonStyle(
                     minimumSize: MaterialStatePropertyAll(Size.square(50))),
@@ -132,6 +142,7 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
                   Map<String, dynamic> formData = {
                     'user_id': firebaseAuth.currentUser?.uid,
                     'first_name': _fnameController.text,
+                    'date_of_birth': _dobController.text, 
                     'last_name': _lnameController.text,
                     'email_or_phone': _emailController.text,
                     'major': _majorController.text,
@@ -170,5 +181,47 @@ class _UserFormWidgetState extends State<CreateFormWidget> {
           focusedBorder: focusBorder(context),
         ),
         controller: fieldController);
+  }
+}
+
+class _InputDateField extends StatelessWidget {
+  final TextEditingController fieldController;
+  final String label;
+  final Icon icon;
+
+  const _InputDateField(
+    this.fieldController,
+    this.label,
+    this.icon, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      style: const TextStyle(color: Color(0xff85D1EE)),
+      controller: fieldController,
+      decoration: InputDecoration(
+        labelText: label,
+         labelStyle: const TextStyle(
+              color: Color.fromARGB(255, 200, 239, 234), fontSize: 18),
+        prefixIcon: icon,
+        enabledBorder:border(context),
+        focusedBorder: focusBorder(context)
+      ),
+      readOnly: true,
+      onTap: () async {
+        DateTime? selectedDate = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        );
+
+        if (selectedDate != null) {
+          fieldController.text = selectedDate.toString();
+        }
+      },
+    );
   }
 }

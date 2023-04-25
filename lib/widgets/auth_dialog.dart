@@ -1,3 +1,5 @@
+/// The AuthDialog class is a widget that displays a dialog for user authentication and registration,
+/// with options for email/password and Microsoft sign-in.
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/services/auth/firebase_auth.dart';

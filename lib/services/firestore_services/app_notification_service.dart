@@ -4,6 +4,12 @@ import 'package:hub_client/models/post_model.dart';
 import 'package:hub_client/models/user_model.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 
+/// The function retrieves the total number of notifications for the current user from a Firebase
+/// collection.
+///
+/// Returns:
+///   The function `getTotalUserNotifications` returns a `Future<int>` which represents the total number
+/// of notifications for the current user. If the current user is not authenticated, it returns 0.
 Future<int> getTotalUserNotifications() async {
   if (firebaseAuth.currentUser == null) return 0;
   final querySnapshot = await FirebaseFirestore.instance
@@ -13,6 +19,14 @@ Future<int> getTotalUserNotifications() async {
       .get();
   return querySnapshot.docs.length;
 }
+
+
+
+/// The function retrieves a stream of notifications for a given user ID from a Firestore collection and
+/// maps the data to a list of NotificationModel objects.
+
+/// Returns:
+///   A stream of lists of `NotificationModel` objects is being returned and updated in real time. 
 
 Stream<List<NotificationModel>> getNotifications(String userId) {
   return FirebaseFirestore.instance
@@ -51,7 +65,6 @@ addCommentToNotification(
 }
 
 /// The function adds a notification to a Firestore collection with specific fields.
-
 addLikesToNotification(PostModel post, String userId) async {
   bool isNotMe = userId != post.ownerId;
 
@@ -64,7 +77,7 @@ addLikesToNotification(PostModel post, String userId) async {
         .doc(post.postId)
         .set({
       "type": 'like',
-      "userDp": user.avatar_url,
+      "userDp": user.avatarUrl,
       "username": post.username,
       "userId": firebaseAuth.currentUser!.uid,
       "postId": post.postId,

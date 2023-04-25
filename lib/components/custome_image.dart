@@ -1,3 +1,5 @@
+/// The CustomImage class is a Flutter widget that displays a cached network image with customizable
+/// height, width, and fit, and an error icon if the image fails to load.
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

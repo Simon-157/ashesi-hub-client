@@ -1,3 +1,8 @@
+/// This is a router configuration for a Flutter app with different routes for authentication, home,
+/// login, registration, feeds, and user profiles.
+/// 
+/// Returns:
+///   The `router` object is being returned, which is an instance of the `GoRouter` class.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +12,6 @@ import 'package:hub_client/ui/views/auth/register_page.dart';
 import 'package:hub_client/ui/views/feed/feed_page.dart';
 import 'package:hub_client/ui/views/home/home_page.dart';
 import 'package:hub_client/ui/views/profileview/profile_page.dart';
-import 'package:hub_client/providers/post_view.dart';
 import 'package:hub_client/ui/widgets/who_to_follow/suggested_follows.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
 import 'package:provider/provider.dart';

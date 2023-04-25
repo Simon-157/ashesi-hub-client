@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hub_client/components/custom_widget_attributes.dart';
 import 'package:hub_client/models/user_model.dart';
-import 'package:hub_client/services/api_services/update_profile.dart';
+import 'package:hub_client/services/api_services/user.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class UserFormWidget extends StatefulWidget {
   final UserModel user;
 
-  const UserFormWidget({required this.user});
+  const UserFormWidget({Key? key, required this.user}) : super(key: key);
 
   @override
   _UserFormWidgetState createState() => _UserFormWidgetState();
@@ -26,9 +26,9 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   void initState() {
     super.initState();
     _usernameController = TextEditingController(text: widget.user.username);
-    _yearGroupController = TextEditingController(text: widget.user.year_group);
-    _bestFoodController = TextEditingController(text: widget.user.best_food);
-    _bestMovieController = TextEditingController(text: widget.user.best_movie);
+    _yearGroupController = TextEditingController(text: widget.user.yearGroup);
+    _bestFoodController = TextEditingController(text: widget.user.bestFood);
+    _bestMovieController = TextEditingController(text: widget.user.bestMovie);
     _majorController = TextEditingController(text: widget.user.major);
     _residenceController = TextEditingController(text: widget.user.residence);
     // _isOnline = widget.user.isOnline;
@@ -223,19 +223,19 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                   onTap: () async {
                     final pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: widget.user.date_of_birth,
+                      initialDate: widget.user.dateOfBirth,
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now(),
                     );
                     if (pickedDate != null) {
                       setState(() {
-                        widget.user.date_of_birth = pickedDate;
+                        widget.user.dateOfBirth = pickedDate;
                       });
                     }
                   },
                   controller: TextEditingController(
-                    text: widget.user.date_of_birth != null
-                        ? widget.user.date_of_birth.toIso8601String()
+                    text: widget.user.dateOfBirth != null
+                        ? widget.user.dateOfBirth.toIso8601String()
                         : '',
                   ),
                 ),
@@ -261,8 +261,8 @@ class _UserFormWidgetState extends State<UserFormWidget> {
               try {
                 // Call the ApiService method to submit the form data
                 Map<String, dynamic> userUpdated =
-                    await UpdateProfileService.updateProfile(
-                        formData, widget.user.user_id);
+                    await UserService.updateProfile(
+                        formData, widget.user.userId);
 
                 if (userUpdated["status"] == "success") {
                   // Show a success message or navigate to a success page

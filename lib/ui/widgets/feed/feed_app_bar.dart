@@ -1,3 +1,5 @@
+/// The FeedAppBar class is a stateless widget that displays the app bar for the feed page, including a
+/// logo, search bar, and notification icon.
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hub_client/services/firestore_services/app_notification_service.dart';

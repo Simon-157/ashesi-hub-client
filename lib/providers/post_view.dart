@@ -1,3 +1,5 @@
+/// The PostsViewModel class is a Flutter ViewModel that provides services and keys for managing posts
+/// and displaying SnackBars.
 import 'package:flutter/material.dart';
 import 'package:hub_client/services/firestore_services/posts_service.dart';
 import 'package:hub_client/services/api_services/user.dart';

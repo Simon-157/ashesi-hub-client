@@ -1,5 +1,6 @@
+/// The LikesService class provides a method to retrieve a stream of likes for a specific post from a
+/// Cloud Firestore collection.
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 CollectionReference likesRef = FirebaseFirestore.instance.collection('likes');
 

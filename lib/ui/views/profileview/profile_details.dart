@@ -1,7 +1,11 @@
+/// This is a Flutter widget that displays a student's profile information fetched from a server using a
+/// FutureBuilder.
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hub_client/services/api_services/getuser_api_service.dart';
+import 'package:hub_client/services/api_services/user.dart';
 import 'package:hub_client/ui/widgets/profile/change_profile_image_dialog.dart';
+
 
 class MyStudentWidget extends StatelessWidget {
   final String profileId;
@@ -12,7 +16,7 @@ class MyStudentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<Map>(
 
-      future: ApiService.getStudent(profileId),
+      future: UserService.getStudent(profileId),
       
       builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
         if (snapshot.hasData) {

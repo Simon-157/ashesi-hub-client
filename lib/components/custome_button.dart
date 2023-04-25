@@ -1,3 +1,6 @@
+/// The code contains two functions, one for creating a styled button with text and an onTap function,
+/// and another for displaying a label and count in a column.
+
 import 'package:flutter/material.dart';
 
 /// The function returns a styled button with text and an onTap function.

@@ -71,14 +71,14 @@ class _SuggestedUsersScreenState extends State<SuggestedUsersScreen> {
                   itemCount: _suggestedUsers.length,
                   itemBuilder: (context, index) {
                     UserModel user = _suggestedUsers[index];
-                    bool isMe = user.user_id == firebaseAuth.currentUser!.uid;
+                    bool isMe = user.userId == firebaseAuth.currentUser!.uid;
                     if (isMe) {
                       return const SizedBox();
                     } else {
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25,
-                          backgroundImage: NetworkImage(user.avatar_url),
+                          backgroundImage: NetworkImage(user.avatarUrl),
                         ),
                         title: Text(
                           user.username,

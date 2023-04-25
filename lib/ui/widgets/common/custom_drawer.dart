@@ -1,3 +1,5 @@
+/// The CustomDrawer class displays a drawer containing in-app notifications for a user's activities,
+/// retrieved from a Firestore database and displayed in a ListView.
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/notification_model.dart';
 import 'package:hub_client/services/firestore_services/app_notification_service.dart';

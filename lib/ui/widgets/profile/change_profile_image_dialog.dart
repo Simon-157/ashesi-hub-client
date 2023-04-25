@@ -1,7 +1,10 @@
+/// The CameraDialog class is a stateful widget that displays an alert dialog with the user's current
+/// profile image and an image uploader widget to allow the user to update their profile image.
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/ui/widgets/common/image_upload.dart';
 import 'package:hub_client/utils/firebase_collections.dart';
+
 
 class CameraDialog extends StatefulWidget {
   final String currentAvatarUri;
@@ -14,6 +17,10 @@ class CameraDialog extends StatefulWidget {
   _CameraDialogState createState() => _CameraDialogState();
 }
 
+
+
+/// This is a stateful widget class that displays an alert dialog with an image uploader and allows the
+/// user to update their profile image.
 class _CameraDialogState extends State<CameraDialog> {
   String? imageUri;
   bool _isLoading = false;

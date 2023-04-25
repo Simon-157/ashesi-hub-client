@@ -1,3 +1,6 @@
+/// The above code defines two functions that return customized border styles for text input fields in the
+/// app.
+
 import 'package:flutter/material.dart';
 
 border(BuildContext context) {

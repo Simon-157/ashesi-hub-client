@@ -1,3 +1,5 @@
+/// The `PostComments` class is a StatefulWidget that displays a list of comments for a post and allows
+/// users to add new comments.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hub_client/models/comments_model.dart';

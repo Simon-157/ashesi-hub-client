@@ -1,3 +1,5 @@
+/// The CreatePostDialog class is a stateful widget that displays a dialog for creating a new post with
+/// a caption, image upload, and send button.
 import 'package:flutter/material.dart';
 import 'package:hub_client/services/firestore_services/posts_service.dart';
 import 'package:hub_client/ui/widgets/common/image_upload.dart';

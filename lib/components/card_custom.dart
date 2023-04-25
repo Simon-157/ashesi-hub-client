@@ -1,3 +1,5 @@
+/// The CustomCard class is a customizable card widget in Flutter that can be elevated or not and has a
+/// child widget and an onTap function.
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {

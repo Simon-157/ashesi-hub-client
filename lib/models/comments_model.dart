@@ -1,3 +1,6 @@
+/// The CommentModel class is a Dart class that represents a comment with properties such as username,
+/// comment text, timestamp, user profile picture, and user ID, and includes methods for converting to
+/// and from JSON format.
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentModel {

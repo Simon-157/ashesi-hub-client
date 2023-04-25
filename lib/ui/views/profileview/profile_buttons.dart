@@ -26,6 +26,10 @@ profileActionButton(user, isFollowing, String id, BuildContext context,
   }
 }
 
+
+/// This function returns a button with different text and functionality based on whether the user is
+/// viewing their own profile, following the profile, or not following the profile.
+/// Returns:
 profilePostsButton(user, isFollowing, String id, BuildContext context,
     Function()? follow, unFollow) {
   bool isMe = id == firebaseAuth.currentUser!.uid;
@@ -47,6 +51,11 @@ profilePostsButton(user, isFollowing, String id, BuildContext context,
   }
 }
 
+/// This function returns a button with different text and functionality based on whether the user is
+/// following the profile, if it's the user's own profile, or if they are not following the profile.
+/// Returns:
+///   The function `profileLikesButton` returns a widget that displays a button with different text and
+/// functionality based on the input parameters. 
 profileLikesButton(user, isFollowing, String id, BuildContext context,
     Function()? follow, unFollow) {
   bool isMe = id == firebaseAuth.currentUser!.uid;

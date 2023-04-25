@@ -1,3 +1,5 @@
+/// The above class defines a PostModel with properties such as postId, ownerId, username, description,
+/// mediaUrl, and timestamp, and includes methods for converting the data to and from JSON format.
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {

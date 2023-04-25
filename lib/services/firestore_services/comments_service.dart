@@ -21,13 +21,13 @@ class CommentsService extends Service {
       "username": user.username,
       "comment": comment,
       "timestamp": Timestamp.now(),
-      "userDp": user.avatar_url,
-      "userId": user.user_id,
+      "userDp": user.avatarUrl,
+      "userId": user.userId,
     });
     bool isNotMe = ownerId != currentUserId;
     if (isNotMe) {
-      addCommentToNotification("comment", comment, user.username, user.user_id,
-          postId, "", ownerId, user.avatar_url);
+      addCommentToNotification("comment", comment, user.username, user.userId,
+          postId, "", ownerId, user.avatarUrl);
     }
   }
 
@@ -53,6 +53,12 @@ class CommentsService extends Service {
     });
   }
 
+
+
+/// This function returns a stream of query snapshots for the comments collection of a specific post ID.
+/// Returns:
+///   A `Stream` of `QuerySnapshot` objects containing `Map<String, dynamic>` data representing the
+/// comments for a specific post identified by `postId`. 
   Stream<QuerySnapshot<Map<String, dynamic>>> getCommentsStream(String postId) {
     return commentRef.doc(postId).collection("comments").snapshots();
   }

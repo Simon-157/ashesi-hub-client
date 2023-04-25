@@ -1,3 +1,5 @@
+/// The ImageUploader class is a widget that allows users to upload images and displays the uploaded
+/// image using Firebase Storage and CachedNetworkImage.
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'package:cached_network_image/cached_network_image.dart';

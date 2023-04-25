@@ -43,7 +43,7 @@ class _EditProfileState extends State<EditProfile> {
                 Center(
                   child: GestureDetector(
                     child: Container(
-                     child: MyStudentWidget(profileId: widget.user.user_id),
+                     child: MyStudentWidget(profileId: widget.user.userId),
                     ),
                   ),
                 ),

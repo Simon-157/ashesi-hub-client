@@ -39,7 +39,7 @@ buildUser(BuildContext context, PostModel post) {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      user.avatar_url.isEmpty
+                      user.avatarUrl.isEmpty
                           ? CircleAvatar(
                               radius: 20.0,
                               backgroundColor:
@@ -58,7 +58,7 @@ buildUser(BuildContext context, PostModel post) {
                           : CircleAvatar(
                               radius: 20.0,
                               backgroundImage: CachedNetworkImageProvider(
-                                user.avatar_url,
+                                user.avatarUrl,
                               ),
                             ),
                       const SizedBox(width: 5.0),
@@ -67,7 +67,7 @@ buildUser(BuildContext context, PostModel post) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            ' ${isMe ? "You" : post.username}',
+                            ' ${isMe ? "You, " : "${user.username},"} @${post.username.split('@')[0]} ',
                             style: const TextStyle(
                               fontWeight: FontWeight.w900,
                               color: Colors.black,

@@ -11,29 +11,36 @@ class ProfileService {
     List<DocumentSnapshot> users = [];
 
     // Get user document of the current user
-    DocumentSnapshot currentUserDocument = await getUserDocument(currentUser);
+    if (await doesDocumentExist(currentUser)) {
+      DocumentSnapshot currentUserDocument = await getUserDocument(currentUser);
 
-    // Get the user's interests
-    String interestsA = currentUserDocument.get('major');
-    String interestsB = currentUserDocument.get('residence');
-    String interestsC = currentUserDocument.get('best_food');
+      // Get the user's interests
+      String interestsA = currentUserDocument.get('major');
+      String interestsB = currentUserDocument.get('residence');
+      String interestsC = currentUserDocument.get('best_food');
 
-    // Query users collection for users with similar interests
-    QuerySnapshot querySnapshotA =
-        await usersRef.where('major', isEqualTo: interestsA).limit(5).get();
+      // Query users collection for users with similar interests
+      QuerySnapshot querySnapshotA =
+          await usersRef.where('major', isEqualTo: interestsA).limit(5).get();
 
-    QuerySnapshot querySnapshotB =
-        await usersRef.where('residence', isEqualTo: interestsB).limit(5).get();
+      QuerySnapshot querySnapshotB = await usersRef
+          .where('residence', isEqualTo: interestsB)
+          .limit(5)
+          .get();
 
-    QuerySnapshot querySnapshotC =
-        await usersRef.where('best_food', isEqualTo: interestsC).limit(5).get();
+      QuerySnapshot querySnapshotC = await usersRef
+          .where('best_food', isEqualTo: interestsC)
+          .limit(5)
+          .get();
 
-    // Add the results to the users list
-    users.addAll(querySnapshotA.docs);
-    users.addAll(querySnapshotB.docs);
+      // Add the results to the users list
+      users.addAll(querySnapshotA.docs);
+      users.addAll(querySnapshotB.docs);
 
-    users.addAll(querySnapshotC.docs);
+      users.addAll(querySnapshotC.docs);
 
+      return users;
+    }
     return users;
   }
 
@@ -71,10 +78,8 @@ class ProfileService {
     return await usersRef.doc(profileId).get();
   }
 
-
-static Future<bool> doesDocumentExist(String documentId) async {
-  DocumentSnapshot snapshot = await usersRef.doc(documentId).get();
-  return snapshot.exists;
-}
-
+  static Future<bool> doesDocumentExist(String documentId) async {
+    DocumentSnapshot snapshot = await usersRef.doc(documentId).get();
+    return snapshot.exists;
+  }
 }

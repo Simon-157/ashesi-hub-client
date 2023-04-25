@@ -1,3 +1,7 @@
+/// contains functions for user authentication and registration using email and password,
+/// as well as Microsoft authentication, and also includes functionality for signing out and storing
+/// user information in shared preferences.
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +13,12 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 var uid = null;
 
+
+/// This function registers a user with their email and password using Firebase authentication and
+/// returns a success message with the user's UID.
+
+/// Returns:
+///   a `Future<String?>` which is a Future that may complete with a String or with null.
 Future<String?> registerWithEmailPassword(String email, String password) async {
   // Initialize Firebase
   await Firebase.initializeApp();
@@ -44,6 +54,16 @@ Future<String> signOut(BuildContext context) async {
 
   return 'User signed out';
 }
+
+
+
+/// This function signs in a user with their email and password, sets their user state, and saves their
+/// information to shared preferences.
+/// Returns:
+///   a `Future<String?>`. If the user is successfully signed in, the function returns a string message
+/// indicating successful login with the user's UID. If the user is not signed in successfully, the
+/// function returns `null`.
+/// 
 
 Future<String?> signInWithEmailPassword(
     BuildContext context, String email, String password) async {
@@ -84,7 +104,13 @@ Future<String?> signInWithEmailPassword(
   return null;
 }
 
-// MICROSOFT AUTHENTICATION
+
+
+/////////////////MICROSOFT AUTHENTICATION ////////////////////////
+
+/// This function signs in a user with Microsoft OAuth provider and returns their user credential.
+///   a `Future` of `UserCredential`.
+
 Future<UserCredential> signInWithMicrosoft(BuildContext context) async {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -100,7 +126,6 @@ Future<UserCredential> signInWithMicrosoft(BuildContext context) async {
 
   // Return the user credential
   uid = authCredential.user!.uid;
-
 
   String? url = authCredential.user?.photoURL;
   final userState = Provider.of<UserState>(context, listen: false);

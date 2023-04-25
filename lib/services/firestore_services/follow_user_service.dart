@@ -69,8 +69,8 @@ class FollowService {
       "type": "follow",
       "ownerId": profileId,
       "username": student.username,
-      "userId": student.user_id,
-      "userDp": student.avatar_url,
+      "userId": student.userId,
+      "userDp": student.avatarUrl,
       "timestamp": DateTime.now(),
     });
   }
